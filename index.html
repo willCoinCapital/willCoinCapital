@@ -1,40 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>willCoinCapital | Crypto Investing</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <nav>
-        <div class="logo">willCoinCapital 🪙</div>
-        <div class="auth-buttons">
-            <button class="login">Login</button>
-            <button class="signup">Sign Up</button>
+<nav class="navbar">
+    <div class="logo">🏢 WILLCOIN CAPITAL</div>
+    <div class="nav-links">
+        <a href="#">Home</a><a href="#">Markets</a><a href="#">Invest</a><a href="#">Portfolio</a>
+    </div>
+    <div class="nav-auth">
+        <button class="btn-login">Log In</button>
+        <button class="btn-signup">Sign Up</button>
+    </div>
+</nav>
+
+<header class="hero">
+    <div class="hero-content">
+        <span class="badge">WillCoin Capital</span>
+        <h1>Unlock Your Crypto Potential: Build Your Will with WillCoin Capital.</h1>
+        <p>Expert Crypto Portfolio Management & Diverse Market Access. Will-powered investing for the digital age.</p>
+        <button class="btn-black">GET STARTED</button>
+    </div>
+    <div class="hero-image">
+        <div class="glass-card main-chart">
+            <h3>Sample Index</h3>
+            <p class="profit">+ Profit</p>
+            <div id="hero-graph"></div> </div>
+    </div>
+</header>
+
+<section class="markets">
+    <h2>Market Overview</h2>
+    <div class="market-grid">
+        <div class="coin-card">
+            <div class="coin-info">
+                <span>Bitcoin BTC</span>
+                <span class="change">+2.7% change</span>
+            </div>
+            <div class="price">$8,300.00</div>
+            <div class="mini-chart"></div>
         </div>
-    </nav>
-
-    <header class="hero">
-        <h1>Invest in the Future</h1>
-        <p class="bonus-text">Get a 50% Deposit Bonus on your first investment!</p>
-        <button class="signup">Start Trading Now</button>
-    </header>
-
-    <section class="price-container">
-        <h2>Live Market Prices 📈</h2>
-        <div class="price-card">
-            <h3>Bitcoin (BTC)</h3>
-            <div id="btc-price">Loading...</div>
         </div>
-        <div class="price-card">
-            <h3>Ethereum (ETH)</h3>
-            <div id="eth-price">Loading...</div>
-        </div>
-    </section>
-
-    <script src="script.js"></script>
-</body>
-</html>
-
-
+</section>
