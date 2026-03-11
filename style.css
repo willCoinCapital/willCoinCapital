@@ -1,7 +1,7 @@
 body {
     background-color: #0b0e11;
     color: #eaecef;
-    font-family: 'Inter', sans-serif;
+    font-family: sans-serif;
     margin: 0;
     text-align: center;
 }
@@ -27,16 +27,16 @@ nav {
 
 .price-card {
     background: #1e2329;
-    padding: 25px;
+    padding: 20px;
     margin: 15px;
     border-radius: 12px;
     display: inline-block;
-    width: 200px;
+    width: 220px;
     border: 1px solid #2b3139;
 }
 
 #btc-price, #eth-price {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     color: #02c076; /* Crypto Green */
     font-weight: bold;
 }
