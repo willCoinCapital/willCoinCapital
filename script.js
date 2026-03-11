@@ -6,10 +6,11 @@ async function fetchPrices() {
         document.getElementById('btc-price').innerText = `$${data.bitcoin.usd.toLocaleString()}`;
         document.getElementById('eth-price').innerText = `$${data.ethereum.usd.toLocaleString()}`;
     } catch (error) {
-        document.getElementById('btc-price').innerText = "Connection Error";
+        console.error("Price fetch failed");
     }
 }
 
 fetchPrices();
-setInterval(fetchPrices, 30000); // Updates every 30 seconds
+setInterval(fetchPrices, 30000);
+
 
