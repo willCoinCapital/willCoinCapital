@@ -1,43 +1,76 @@
-body {
-    background-color: #0b0e11;
-    color: #eaecef;
-    font-family: sans-serif;
-    margin: 0;
-    text-align: center;
+:root {
+    --yellow: #f5d342;
+    --dark: #0f1111;
+    --glass: rgba(255, 255, 255, 0.1);
 }
 
-nav {
+body {
+    background-color: var(--yellow);
+    color: var(--dark);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+}
+
+/* Navbar */
+.navbar {
     display: flex;
     justify-content: space-between;
-    padding: 15px 5%;
-    background-color: #181a20;
-    border-bottom: 1px solid #2b3139;
+    padding: 20px 5%;
+    align-items: center;
 }
 
+.nav-links a {
+    margin: 0 15px;
+    text-decoration: none;
+    color: var(--dark);tr
+    font-weight: 500;
+}
+
+/* Hero Section */
 .hero {
-    padding: 60px 20px;
-    background: linear-gradient(180deg, #1e2329 0%, #0b0e11 100%);
+    display: flex;
+    padding: 50px 5%;
+    align-items: center;
 }
 
-.bonus-text {
-    color: #f0b90b;
-    font-size: 1.5rem;
+.hero-content { flex: 1; }
+
+.hero-content h1 {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    margin: 20px 0;
+}
+
+.btn-black {
+    background: var(--dark);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 30px;
+    border: none;
     font-weight: bold;
 }
 
-.price-card {
-    background: #1e2329;
+/* Glassmorphism Card */
+.glass-card {
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 25px;
+    color: white;
+    box-shadow: 20px 20px 60px rgba(0,0,0,0.1);
+}
+
+/* Market Grid */
+.market-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 0 5%;
+}
+
+.coin-card {
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
     padding: 20px;
-    margin: 15px;
-    border-radius: 12px;
-    display: inline-block;
-    width: 220px;
-    border: 1px solid #2b3139;
 }
-
-#btc-price, #eth-price {
-    font-size: 1.3rem;
-    color: #02c076; /* Crypto Green */
-    font-weight: bold;
-}
-
