@@ -3,121 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WillCoin Capital | Live Platform</title>
-    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root { --brand-yellow: #f5d448; --dark: #0b0d0e; --glass: rgba(15, 17, 17, 0.95); }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: var(--brand-yellow); font-family: 'Inter', sans-serif; color: #1a1a1a; overflow-x: hidden; }
-        nav { display: flex; justify-content: space-between; align-items: center; padding: 25px 6%; }
-        .logo { font-family: 'Archivo Black', sans-serif; font-size: 1.2rem; }
-        .hero { display: flex; flex-wrap: wrap; padding: 40px 6%; align-items: center; gap: 50px; }
-        .hero-text h1 { font-family: 'Archivo Black', sans-serif; font-size: 3.5rem; line-height: 1; margin: 20px 0; }
-        .glass-card { background: var(--dark); color: white; padding: 30px; border-radius: 30px; flex: 1; min-width: 350px; }
-        .market-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 40px 6%; }
-        .coin-card { background: rgba(255,255,255,0.4); backdrop-filter: blur(10px); padding: 30px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.5); }
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; }
-        .modal-content { background: white; padding: 40px; border-radius: 24px; width: 90%; max-width: 400px; text-align: center; }
-        .btn-black { background: #000; color: #fff; width: 100%; padding: 15px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; margin-top: 10px; }
-    </style>
+    <title>willCoinCapital | Professional Crypto Trading</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
 </head>
-<body>
+<body class="bg-[#020817] text-white overflow-x-hidden">
 
-    <nav>
-        <div class="logo">🏢 WILLCOIN CAPITAL</div>
-        <div id="loggedOutUI">
-            <button onclick="openModal('login')" style="background:none; border:none; font-weight:700; cursor:pointer; margin-right:15px;">Log In</button>
-            <button onclick="openModal('signup')" style="background:#fff; border:1px solid #ddd; padding:10px 20px; border-radius:10px; font-weight:700; cursor:pointer;">Sign Up</button>
+    <div class="fixed top-0 right-0 w-[500px] h-[500px] bg-cyan-500/10 blur-[120px] rounded-full -z-10"></div>
+
+    <nav class="flex items-center justify-between px-8 py-6 max-w-7xl mx-auto">
+        <div class="flex items-center gap-2 text-2xl font-bold">
+            <div class="w-8 h-8 bg-cyan-400 rounded flex items-center justify-center text-black italic font-black">W</div>
+            <span>WCC</span>
         </div>
-        <div id="loggedInUI" style="display:none; font-weight:800;">
-            <span id="userName">INVESTOR</span> | <button onclick="handleLogout()" style="cursor:pointer; border:none; background:none; text-decoration:underline;">Logout</button>
+        <div class="hidden md:flex gap-8 text-gray-400 text-sm font-medium">
+            <a href="#" class="hover:text-cyan-400 transition">Markets</a>
+            <a href="#" class="hover:text-cyan-400 transition">Features</a>
+            <a href="#" class="hover:text-cyan-400 transition">Bonus</a>
+        </div>
+        <div class="flex gap-4">
+            <button class="px-5 py-2 text-sm font-semibold border border-gray-800 rounded-lg">LOGIN</button>
+            <button class="px-5 py-2 text-sm font-bold bg-cyan-400 text-black rounded-lg uppercase">Sign Up</button>
         </div>
     </nav>
 
-    <header class="hero">
-        <div class="hero-text">
-            <h1>Expert Portfolio Management.</h1>
-            <p>Live global market analytics at your fingertips.</p>
-            <button class="btn-black" style="width:auto; padding: 15px 40px;" onclick="openModal('signup')">GET STARTED</button>
-        </div>
-        <div class="glass-card">
-            <div style="font-size:0.8rem; margin-bottom:10px; color:#4ade80;">● LIVE MARKET DATA</div>
-            <div style="height: 250px;">
-                <iframe src="https://s.tradingview.com/widgetembed/?symbol=BITSTAMP%3ABTCUSD&interval=D&theme=dark" width="100%" height="100%" frameborder="0"></iframe>
-            </div>
-        </div>
-    </header>
-
-    <section class="market-grid">
-        <div class="coin-card"><b>Bitcoin BTC</b><div id="btc-p" style="font-size:1.8rem; font-weight:800; margin-top:10px;">Loading...</div></div>
-        <div class="coin-card"><b>Ethereum ETH</b><div id="eth-p" style="font-size:1.8rem; font-weight:800; margin-top:10px;">Loading...</div></div>
-    </section>
-
-    <div class="modal-overlay" id="authModal">
-        <div class="modal-content">
-            <h2 id="modalTitle">Sign Up</h2>
-            <input type="email" id="email" placeholder="Email" style="width:100%; padding:15px; margin:10px 0; border:1px solid #ddd; border-radius:10px;">
-            <input type="password" id="pass" placeholder="Password" style="width:100%; padding:15px; margin:10px 0; border:1px solid #ddd; border-radius:10px;">
-            <button class="btn-black" onclick="processAuth()">Continue</button>
-            <p id="error" style="color:red; font-size:0.8rem; margin-top:10px;"></p>
-            <span onclick="closeModal()" style="display:block; margin-top:15px; font-size:0.8rem; cursor:pointer; opacity:0.6;">Cancel</span>
+    <div class="ticker-wrap border-y border-white/5 bg-white/5 py-3">
+        <div class="ticker-move" id="ticker-content">
+            <span class="text-gray-500">Connecting to live market feeds...</span>
         </div>
     </div>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    <main class="max-w-7xl mx-auto px-8 py-16 grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+            <h1 class="text-6xl font-black leading-tight mb-6 tracking-tighter">
+                Maximize Your <br> Crypto Potential <br>
+                <span class="text-cyan-400 font-italic">willCoinCapital.</span>
+            </h1>
+            <p class="text-gray-400 text-lg mb-8">Secure. Transparent. Performance-driven trading.</p>
+            <button class="px-10 py-5 bg-cyan-400 text-black font-black rounded-xl hover:scale-105 transition uppercase">Start Trading</button>
+        </div>
 
-        // YOUR REAL KEYS APPLIED HERE
-        const firebaseConfig = {
-            apiKey: "AIzaSyBp5P0ilEUDezqrITWkUv4dWrmHLNDOJj0",
-            authDomain: "willcoin-capital.firebaseapp.com",
-            projectId: "willcoin-capital",
-            storageBucket: "willcoin-capital.firebasestorage.app",
-            messagingSenderId: "829963878011",
-            appId: "1:829963878011:web:376acb3d4b72b0068eacde",
-            measurementId: "G-Z3YCVVY99Z"
-        };
+        <div class="glass-card p-10 rounded-3xl relative">
+            <h2 class="text-3xl font-black italic uppercase tracking-tighter">Exclusive 50%</h2>
+            <h2 class="text-3xl font-black italic text-cyan-400 uppercase tracking-tighter mb-8">Deposit Bonus</h2>
+            
+            <div class="space-y-6">
+                <label class="text-[10px] text-gray-500 font-black uppercase tracking-widest block">Deposit Amount ($)</label>
+                <input type="number" id="depositInput" value="1000" class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-2xl font-bold outline-none focus:border-cyan-400">
+                <input type="range" id="depositSlider" min="100" max="10000" step="100" value="1000" class="w-full accent-cyan-400">
+            </div>
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+            <div class="grid grid-cols-3 gap-4 mt-10 pt-8 border-t border-white/5">
+                <div><p class="text-[10px] text-gray-500 font-bold uppercase">Invest</p><p class="text-xl font-black" id="displayInvest">$1,000</p></div>
+                <div class="text-center"><p class="text-[10px] text-cyan-400 font-bold uppercase">Bonus</p><p class="text-xl font-black text-cyan-400" id="displayBonus">$500</p></div>
+                <div class="text-right"><p class="text-[10px] text-gray-500 font-bold uppercase">Total</p><p class="text-xl font-black" id="displayTotal">$1,500</p></div>
+            </div>
+        </div>
+    </main>
 
-        window.openModal = (type) => { document.getElementById('authModal').style.display = 'flex'; document.getElementById('modalTitle').innerText = type === 'login' ? 'Welcome Back' : 'Join WillCoin'; };
-        window.closeModal = () => { document.getElementById('authModal').style.display = 'none'; };
-
-        window.processAuth = async () => {
-            const email = document.getElementById('email').value;
-            const pass = document.getElementById('pass').value;
-            const mode = document.getElementById('modalTitle').innerText;
-            try {
-                if(mode === 'Join WillCoin') { await createUserWithEmailAndPassword(auth, email, pass); } 
-                else { await signInWithEmailAndPassword(auth, email, pass); }
-                closeModal();
-            } catch (err) { document.getElementById('error').innerText = err.message; }
-        };
-
-        window.handleLogout = () => signOut(auth);
-
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById('loggedOutUI').style.display = 'none';
-                document.getElementById('loggedInUI').style.display = 'block';
-                document.getElementById('userName').innerText = user.email.split('@')[0].toUpperCase();
-            } else {
-                document.getElementById('loggedOutUI').style.display = 'block';
-                document.getElementById('loggedInUI').style.display = 'none';
-            }
-        });
-
-        async function fetchPrices() {
-            const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd');
-            const data = await res.json();
-            document.getElementById('btc-p').innerText = '$' + data.bitcoin.usd.toLocaleString();
-            document.getElementById('eth-p').innerText = '$' + data.ethereum.usd.toLocaleString();
-        }
-        fetchPrices(); setInterval(fetchPrices, 30000);
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
-
-
