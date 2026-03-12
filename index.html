@@ -1,39 +1,182 @@
-<nav class="navbar">
-    <div class="logo">🏢 WILLCOIN CAPITAL</div>
-    <div class="nav-links">
-        <a href="#">Home</a><a href="#">Markets</a><a href="#">Invest</a><a href="#">Portfolio</a>
-    </div>
-    <div class="nav-auth">
-        <button class="btn-login">Log In</button>
-        <button class="btn-signup">Sign Up</button>
-    </div>
-</nav>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WillCoin Capital | Unlock Your Crypto Potential</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --brand-yellow: #f6d443; /* The exact Cyber Yellow from your screenshot */
+            --dark-bg: #0b0d0e;
+            --text-main: #1a1a1a;
+            --glass: rgba(18, 20, 23, 0.95);
+        }
 
-<header class="hero">
-    <div class="hero-content">
-        <span class="badge">WillCoin Capital</span>
-        <h1>Unlock Your Crypto Potential: Build Your Will with WillCoin Capital.</h1>
-        <p>Expert Crypto Portfolio Management & Diverse Market Access. Will-powered investing for the digital age.</p>
-        <button class="btn-black">GET STARTED</button>
-    </div>
-    <div class="hero-image">
-        <div class="glass-card main-chart">
-            <h3>Sample Index</h3>
-            <p class="profit">+ Profit</p>
-            <div id="hero-graph"></div> </div>
-    </div>
-</header>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-<section class="markets">
-    <h2>Market Overview</h2>
-    <div class="market-grid">
-        <div class="coin-card">
-            <div class="coin-info">
-                <span>Bitcoin BTC</span>
-                <span class="change">+2.7% change</span>
+        body {
+            background-color: var(--brand-yellow);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        /* --- Navigation --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 6%;
+            font-weight: 600;
+        }
+
+        .logo { font-size: 1.2rem; font-weight: 800; display: flex; align-items: center; gap: 8px; }
+        .nav-links a { text-decoration: none; color: var(--text-main); margin: 0 15px; font-size: 0.9rem; }
+        .nav-auth .login { background: transparent; border: none; font-weight: 600; margin-right: 15px; cursor: pointer; }
+        .nav-auth .signup { background: white; border: 1px solid #ccc; padding: 8px 20px; border-radius: 8px; cursor: pointer; }
+
+        /* --- Hero Section --- */
+        .hero {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 60px 6%;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .hero-text { flex: 1; min-width: 320px; }
+        .hero-text .badge { background: rgba(0,0,0,0.05); padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .hero-text h1 { font-size: clamp(2.5rem, 5vw, 3.8rem); font-weight: 800; line-height: 1.1; margin: 20px 0; letter-spacing: -1px; }
+        .hero-text p { font-size: 1.1rem; margin-bottom: 30px; opacity: 0.8; max-width: 500px; }
+        
+        .btn-get-started { background: #1a1a1a; color: white; padding: 18px 35px; border-radius: 30px; border: none; font-weight: 700; cursor: pointer; }
+
+        /* --- Hero Glass Card --- */
+        .hero-visual { flex: 1; min-width: 350px; display: flex; justify-content: center; position: relative; }
+        .glass-card {
+            background: var(--glass);
+            color: white;
+            padding: 25px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* --- Market Overview Grid --- */
+        .market-section { padding: 60px 6%; }
+        .market-section h2 { font-size: 2rem; font-weight: 800; margin-bottom: 5px; }
+        .market-section p { margin-bottom: 30px; opacity: 0.7; }
+
+        .market-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .coin-card {
+            background: rgba(255, 255, 255, 0.3); /* Transparent white */
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.4);
+            padding: 25px;
+            border-radius: 20px;
+            transition: transform 0.2s;
+        }
+        .coin-card:hover { transform: translateY(-5px); }
+        .coin-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+        .coin-header span { font-weight: 600; font-size: 0.9rem; }
+        .change-up { color: #1b8a5a; font-size: 0.8rem; font-weight: 700; }
+        .price { font-size: 1.8rem; font-weight: 800; }
+
+        /* Small Graph Placeholder */
+        .mini-graph { width: 100%; height: 60px; margin-top: 15px; border-bottom: 2px solid rgba(0,0,0,0.1); }
+
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo">🏢 WILLCOIN CAPITAL</div>
+        <div class="nav-links">
+            <a href="#">Home</a>
+            <a href="#">Markets</a>
+            <a href="#">Invest</a>
+            <a href="#">Portfolio</a>
+            <a href="#">Learn</a>
+            <a href="#">Community</a>
+        </div>
+        <div class="nav-auth">
+            <button class="login">Log In</button>
+            <button class="signup">Sign Up</button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-text">
+            <span class="badge">WillCoin Capital</span>
+            <h1>Unlock Your Crypto Potential: Build Your Will with WillCoin Capital.</h1>
+            <p>Expert Crypto Portfolio Management & Diverse Market Access. Will-powered investing for the digital age.</p>
+            <button class="btn-get-started">GET STARTED</button>
+            <p style="font-size: 0.8rem; margin-top: 15px; font-weight: 600;">Explore Our Core Fund</p>
+        </div>
+
+        <div class="hero-visual">
+            <div class="glass-card">
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="font-weight: 600; opacity: 0.7;">Sample Index</span>
+                    <span style="font-size: 0.7rem; opacity: 0.5;">Last 30 days</span>
+                </div>
+                <div style="color: #4ade80; margin: 10px 0; font-weight: bold;">📈 Profit</div>
+                <div style="height: 200px; display: flex; align-items: flex-end; gap: 5px;">
+                    <div style="background: #4ade80; height: 30%; flex: 1; border-radius: 4px; opacity: 0.3;"></div>
+                    <div style="background: #4ade80; height: 50%; flex: 1; border-radius: 4px; opacity: 0.5;"></div>
+                    <div style="background: #4ade80; height: 40%; flex: 1; border-radius: 4px; opacity: 0.4;"></div>
+                    <div style="background: #4ade80; height: 80%; flex: 1; border-radius: 4px; opacity: 0.8;"></div>
+                    <div style="background: #4ade80; height: 95%; flex: 1; border-radius: 4px;"></div>
+                </div>
+                <div style="margin-top: 20px; background: rgba(255,255,255,0.05); padding: 10px; border-radius: 12px; display: flex; align-items: center; justify-content: space-between;">
+                   <span style="font-size: 0.8rem;">WCAP-30 <br><small style="opacity:0.5">WillCoin Capital top 30 index</small></span>
+                   <span>→</span>
+                </div>
             </div>
-            <div class="price">$8,300.00</div>
-            <div class="mini-chart"></div>
         </div>
+    </section>
+
+    <section class="market-section">
+        <h2>Market Overview</h2>
+        <p>Real-time data in major cryptocurrencies.</p>
+
+        <div class="market-grid">
+            <div class="coin-card">
+                <div class="coin-header">
+                    <span>Bitcoin <br><small>BTC</small></span>
+                    <span class="change-up">24h change <br>+2.7%</span>
+                </div>
+                <div class="price">$69,420.00</div>
+                <div class="mini-graph"></div>
+            </div>
+
+            <div class="coin-card">
+                <div class="coin-header">
+                    <span>Ethereum <br><small>ETH</small></span>
+                    <span class="change-up">24h change <br>+1.4%</span>
+                </div>
+                <div class="price">$3,850.12</div>
+                <div class="mini-graph"></div>
+            </div>
+
+            <div class="coin-card">
+                <div class="coin-header">
+                    <span>WillCoin <br><small>WC</small></span>
+                    <span class="change-up">24h change <br>+24.0%</span>
+                </div>
+                <div class="price">$2.3355</div>
+                <div class="mini-graph"></div>
+            </div>
         </div>
-</section>
+    </section>
+
+</body>
+</html>
