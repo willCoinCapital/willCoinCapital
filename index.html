@@ -3,183 +3,121 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WillCoin Capital | Live Investment Platform</title>
+    <title>WillCoin Capital | Live Platform</title>
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --brand-yellow: #f5d448;
-            --dark-bg: #0b0d0e;
-            --glass: rgba(15, 17, 17, 0.95);
-            --white-glass: rgba(255, 255, 255, 0.4);
-        }
-
+        :root { --brand-yellow: #f5d448; --dark: #0b0d0e; --glass: rgba(15, 17, 17, 0.95); }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background-color: var(--brand-yellow); font-family: 'Inter', sans-serif; color: #1a1a1a; overflow-x: hidden; }
-
-        /* --- Navigation --- */
         nav { display: flex; justify-content: space-between; align-items: center; padding: 25px 6%; }
         .logo { font-family: 'Archivo Black', sans-serif; font-size: 1.2rem; }
-        .nav-auth .btn-login { background: transparent; border: none; font-weight: 700; margin-right: 20px; cursor: pointer; }
-        .nav-auth .btn-signup { background: #fff; border: 1px solid #ddd; padding: 10px 22px; border-radius: 10px; font-weight: 700; cursor: pointer; }
-        .user-profile { display: none; align-items: center; gap: 10px; font-weight: 800; }
-
-        /* --- Hero --- */
-        .hero { display: flex; flex-wrap: wrap; padding: 40px 6% 80px; align-items: center; gap: 50px; }
-        .hero-text { flex: 1.2; min-width: 320px; }
-        .hero-text h1 { font-family: 'Archivo Black', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); line-height: 1; margin: 25px 0; }
-        
-        /* --- Glass Card & Chart --- */
-        .hero-visual { flex: 0.8; position: relative; }
-        .glass-card { background: var(--glass); color: white; padding: 30px; border-radius: 30px; box-shadow: 0 30px 60px rgba(0,0,0,0.3); }
-        .chart-container { height: 250px; margin-top: 15px; border-radius: 15px; overflow: hidden; background: #fff; }
-
-        /* --- Market Grid --- */
+        .hero { display: flex; flex-wrap: wrap; padding: 40px 6%; align-items: center; gap: 50px; }
+        .hero-text h1 { font-family: 'Archivo Black', sans-serif; font-size: 3.5rem; line-height: 1; margin: 20px 0; }
+        .glass-card { background: var(--dark); color: white; padding: 30px; border-radius: 30px; flex: 1; min-width: 350px; }
         .market-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; padding: 40px 6%; }
-        .coin-card { background: var(--white-glass); backdrop-filter: blur(10px); padding: 30px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.5); }
-        .price { font-family: 'Archivo Black', sans-serif; font-size: 2rem; margin: 10px 0; }
-        .up { color: #15803d; font-weight: 800; }
-        .down { color: #b91c1c; font-weight: 800; }
-
-        /* --- Modals --- */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); backdrop-filter: blur(5px);
-            display: none; justify-content: center; align-items: center; z-index: 1000;
-        }
+        .coin-card { background: rgba(255,255,255,0.4); backdrop-filter: blur(10px); padding: 30px; border-radius: 24px; border: 1px solid rgba(255,255,255,0.5); }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 1000; }
         .modal-content { background: white; padding: 40px; border-radius: 24px; width: 90%; max-width: 400px; text-align: center; }
-        .modal-content h2 { font-family: 'Archivo Black', sans-serif; margin-bottom: 20px; }
-        .modal-content input { width: 100%; padding: 15px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; }
-        .btn-submit { background: #000; color: #fff; width: 100%; padding: 15px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; margin-top: 10px; }
+        .btn-black { background: #000; color: #fff; width: 100%; padding: 15px; border-radius: 10px; border: none; font-weight: 700; cursor: pointer; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <nav>
         <div class="logo">🏢 WILLCOIN CAPITAL</div>
-        <div class="nav-auth" id="loggedOutUI">
-            <button class="btn-login" onclick="openModal('login')">Log In</button>
-            <button class="btn-signup" onclick="openModal('signup')">Sign Up</button>
+        <div id="loggedOutUI">
+            <button onclick="openModal('login')" style="background:none; border:none; font-weight:700; cursor:pointer; margin-right:15px;">Log In</button>
+            <button onclick="openModal('signup')" style="background:#fff; border:1px solid #ddd; padding:10px 20px; border-radius:10px; font-weight:700; cursor:pointer;">Sign Up</button>
         </div>
-        <div class="user-profile" id="loggedInUI">
-            <span id="userNameDisplay">INVESTOR</span>
-            <button onclick="handleLogout()" style="font-size:0.7rem; cursor:pointer; background:none; border:1px solid #000; padding:5px 10px; border-radius:5px;">Logout</button>
+        <div id="loggedInUI" style="display:none; font-weight:800;">
+            <span id="userName">INVESTOR</span> | <button onclick="handleLogout()" style="cursor:pointer; border:none; background:none; text-decoration:underline;">Logout</button>
         </div>
     </nav>
 
     <header class="hero">
         <div class="hero-text">
-            <h1>Unlock Your Crypto Potential.</h1>
-            <p>Institutional-grade portfolio management with live global market analytics.</p>
-            <button class="btn-submit" style="width:auto; padding: 15px 40px;" onclick="openModal('signup')">GET STARTED</button>
+            <h1>Expert Portfolio Management.</h1>
+            <p>Live global market analytics at your fingertips.</p>
+            <button class="btn-black" style="width:auto; padding: 15px 40px;" onclick="openModal('signup')">GET STARTED</button>
         </div>
-
-        <div class="hero-visual">
-            <div class="glass-card">
-                <div style="font-size:0.8rem; opacity:0.6; display:flex; justify-content:space-between;">
-                    <span>BITCOIN REAL-TIME (USD)</span>
-                    <span style="color:#4ade80;">● LIVE CONNECTION</span>
-                </div>
-                <div class="chart-container">
-                    <iframe src="https://s.tradingview.com/widgetembed/?symbol=BITSTAMP%3ABTCUSD&interval=D&theme=light" width="100%" height="100%" frameborder="0"></iframe>
-                </div>
+        <div class="glass-card">
+            <div style="font-size:0.8rem; margin-bottom:10px; color:#4ade80;">● LIVE MARKET DATA</div>
+            <div style="height: 250px;">
+                <iframe src="https://s.tradingview.com/widgetembed/?symbol=BITSTAMP%3ABTCUSD&interval=D&theme=dark" width="100%" height="100%" frameborder="0"></iframe>
             </div>
         </div>
     </header>
 
     <section class="market-grid">
-        <div class="coin-card">
-            <b>Bitcoin BTC</b>
-            <div class="price" id="btc-price">Loading...</div>
-            <span id="btc-change">--</span>
-        </div>
-        <div class="coin-card">
-            <b>Ethereum ETH</b>
-            <div class="price" id="eth-price">Loading...</div>
-            <span id="eth-change">--</span>
-        </div>
+        <div class="coin-card"><b>Bitcoin BTC</b><div id="btc-p" style="font-size:1.8rem; font-weight:800; margin-top:10px;">Loading...</div></div>
+        <div class="coin-card"><b>Ethereum ETH</b><div id="eth-p" style="font-size:1.8rem; font-weight:800; margin-top:10px;">Loading...</div></div>
     </section>
 
     <div class="modal-overlay" id="authModal">
         <div class="modal-content">
             <h2 id="modalTitle">Sign Up</h2>
-            <input type="email" id="email" placeholder="Email Address">
-            <input type="password" id="pass" placeholder="Password">
-            <button class="btn-submit" id="authBtn" onclick="processAuth()">Continue</button>
-            <p id="authError" style="color:red; font-size:0.8rem; margin-top:10px;"></p>
+            <input type="email" id="email" placeholder="Email" style="width:100%; padding:15px; margin:10px 0; border:1px solid #ddd; border-radius:10px;">
+            <input type="password" id="pass" placeholder="Password" style="width:100%; padding:15px; margin:10px 0; border:1px solid #ddd; border-radius:10px;">
+            <button class="btn-black" onclick="processAuth()">Continue</button>
+            <p id="error" style="color:red; font-size:0.8rem; margin-top:10px;"></p>
             <span onclick="closeModal()" style="display:block; margin-top:15px; font-size:0.8rem; cursor:pointer; opacity:0.6;">Cancel</span>
         </div>
     </div>
 
     <script type="module">
-        // --- REAL FIREBASE INTEGRATION ---
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // Your exact config from the screenshot
+        // YOUR REAL KEYS APPLIED HERE
         const firebaseConfig = {
-            apiKey: "AIzaSyBp5P0ilEUDezqrITWkUv4dWr...", // I used the key from your image
+            apiKey: "AIzaSyBp5P0ilEUDezqrITWkUv4dWrmHLNDOJj0",
             authDomain: "willcoin-capital.firebaseapp.com",
             projectId: "willcoin-capital",
-            storageBucket: "willcoin-capital.appspot.com",
+            storageBucket: "willcoin-capital.firebasestorage.app",
             messagingSenderId: "829963878011",
-            appId: "1:829963878011:web:8913ebfe158f...",
-            measurementId: "G-2FEKT1VYD6"
+            appId: "1:829963878011:web:376acb3d4b72b0068eacde",
+            measurementId: "G-Z3YCVVY99Z"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
 
-        // Modal Controls
-        window.openModal = (type) => {
-            document.getElementById('authModal').style.display = 'flex';
-            document.getElementById('modalTitle').innerText = type === 'login' ? 'Welcome Back' : 'Join WillCoin';
-        };
-
+        window.openModal = (type) => { document.getElementById('authModal').style.display = 'flex'; document.getElementById('modalTitle').innerText = type === 'login' ? 'Welcome Back' : 'Join WillCoin'; };
         window.closeModal = () => { document.getElementById('authModal').style.display = 'none'; };
 
-        // Authentication Logic
         window.processAuth = async () => {
             const email = document.getElementById('email').value;
             const pass = document.getElementById('pass').value;
             const mode = document.getElementById('modalTitle').innerText;
-            const errorEl = document.getElementById('authError');
-
             try {
-                if(mode === 'Join WillCoin') {
-                    await createUserWithEmailAndPassword(auth, email, pass);
-                } else {
-                    await signInWithEmailAndPassword(auth, email, pass);
-                }
+                if(mode === 'Join WillCoin') { await createUserWithEmailAndPassword(auth, email, pass); } 
+                else { await signInWithEmailAndPassword(auth, email, pass); }
                 closeModal();
-            } catch (err) {
-                errorEl.innerText = err.message;
-            }
+            } catch (err) { document.getElementById('error').innerText = err.message; }
         };
 
         window.handleLogout = () => signOut(auth);
 
-        // Watch Login State
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 document.getElementById('loggedOutUI').style.display = 'none';
-                document.getElementById('loggedInUI').style.display = 'flex';
-                document.getElementById('userNameDisplay').innerText = user.email.split('@')[0].toUpperCase();
+                document.getElementById('loggedInUI').style.display = 'block';
+                document.getElementById('userName').innerText = user.email.split('@')[0].toUpperCase();
             } else {
                 document.getElementById('loggedOutUI').style.display = 'block';
                 document.getElementById('loggedInUI').style.display = 'none';
             }
         });
 
-        // Live Prices
         async function fetchPrices() {
-            const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd&include_24hr_change=true');
+            const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd');
             const data = await res.json();
-            document.getElementById('btc-price').innerText = '$' + data.bitcoin.usd.toLocaleString();
-            document.getElementById('eth-price').innerText = '$' + data.ethereum.usd.toLocaleString();
+            document.getElementById('btc-p').innerText = '$' + data.bitcoin.usd.toLocaleString();
+            document.getElementById('eth-p').innerText = '$' + data.ethereum.usd.toLocaleString();
         }
-        fetchPrices();
-        setInterval(fetchPrices, 30000);
+        fetchPrices(); setInterval(fetchPrices, 30000);
     </script>
 </body>
 </html>
+
 
