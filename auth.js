@@ -3,11 +3,10 @@ function login(){
 let username = document.getElementById("username").value
 let password = document.getElementById("password").value
 
-/* Demo login credentials */
-
 if(username === "admin" && password === "1234"){
 
 localStorage.setItem("willcoinLoggedIn","true")
+localStorage.setItem("willcoinUser", username)
 
 window.location.href = "dashboard.html"
 
