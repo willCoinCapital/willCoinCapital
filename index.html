@@ -13,11 +13,22 @@
         .mission-glow { box-shadow: 0 0 20px rgba(34, 211, 238, 0.15); border: 1px solid rgba(34, 211, 238, 0.25); background: rgba(34, 211, 238, 0.05); }
         .feed-toast { animation: slideUp 0.5s ease-out; }
         @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        
+        /* Floating Telegram Pulse */
+        .tg-float { position: fixed; bottom: 30px; right: 30px; z-index: 100; transition: all 0.3s ease; }
+        .tg-float:hover { transform: scale(1.05); }
+        .tg-glow { box-shadow: 0 0 25px rgba(34, 211, 238, 0.5); }
+
         input[type="range"] { -webkit-appearance: none; background: #1f2937; height: 6px; border-radius: 10px; }
         input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; height: 18px; width: 18px; border-radius: 50%; background: #22d3ee; cursor: pointer; box-shadow: 0 0 10px rgba(34,211,238,0.8); }
     </style>
 </head>
 <body class="overflow-x-hidden">
+
+    <a href="https://t.me/willCoin_Capital" target="_blank" class="tg-float flex items-center gap-3 bg-cyan-400 text-black px-6 py-4 rounded-full font-black uppercase text-[11px] tracking-widest tg-glow animate-bounce">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18.717-.962 4.084-1.362 5.441-.168.575-.521.821-.812.834-.647.031-1.137-.457-1.764-.868-.981-.643-1.534-1.043-2.484-1.669-1.098-.724-.386-1.121.24-1.772.163-.171 3.007-2.759 3.062-2.992.007-.03.013-.142-.053-.2-.066-.058-.163-.038-.233-.022-.099.022-1.68 1.069-4.741 3.136-.448.308-.854.458-1.218.449-.4-.01-.1.171-2.316.486-1.172.181-2.105.101-2.019.822.044.375.31.572.793.738 1.155.396 3.08.97 3.08.97s.416.14.739.117c.323-.023.646-.226.646-.226s1.111-.741 1.547-1.026c.436-.285.871-.157.871-.157s2.516 1.657 2.966 1.996c.45.339.79.499 1.152.46.363-.039.726-.341.726-.341s.545-1.043.812-2.355c.267-1.312.805-4.544.116-4.544-.689 0-3.376.549-3.376.549z"/></svg>
+        Live Support
+    </a>
 
     <nav class="flex items-center justify-between px-6 py-6 max-w-7xl mx-auto">
         <a href="#" class="flex items-center">
@@ -33,9 +44,11 @@
         <div>
             <h1 class="text-5xl md:text-6xl font-extrabold leading-tight mb-6 tracking-tighter uppercase">
                 Maximize Your <br> Crypto Potential <br> 
-                <span class="text-cyan-400">willCoinCapital.</span>
+                <span class="text-cyan-400 italic">willCoinCapital.</span>
             </h1>
-            <p class="text-gray-400 text-lg mb-10 max-w-md font-medium">Professional terminal tools and the industry's most flexible 7-day liquidity maturation protocols.</p>
+            <p class="text-gray-400 text-lg mb-10 max-w-md font-medium leading-relaxed">
+                Professional Investing tool and the most flexible 7 day’s liquidity maturation protocols • <span class="text-white font-bold">BE YOUR OWN BOSS.</span>
+            </p>
             
             <div class="flex flex-wrap gap-4">
                 <button onclick="toggleAuth('signup')" class="px-8 py-4 bg-cyan-400 text-black font-black rounded-xl uppercase tracking-widest hover:scale-105 transition shadow-2xl">
@@ -67,14 +80,11 @@
         <div class="glass max-w-md w-full p-10 rounded-[40px] border border-cyan-400/30 relative z-10 shadow-2xl">
             <h2 id="authTitle" class="text-3xl font-black uppercase tracking-tighter mb-2 text-cyan-400">Login</h2>
             <p id="authDesc" class="text-gray-500 text-sm mb-8 font-bold uppercase tracking-widest">Access your terminal</p>
-            
             <form onsubmit="handleAuth(event)" class="space-y-4">
                 <input type="email" placeholder="Email Address" required class="w-full bg-white/5 border border-white/10 rounded-xl p-4 outline-none focus:border-cyan-400 transition text-white">
                 <input type="password" placeholder="Password" required class="w-full bg-white/5 border border-white/10 rounded-xl p-4 outline-none focus:border-cyan-400 transition text-white">
                 <button type="submit" class="w-full py-4 bg-cyan-400 text-black font-black rounded-xl uppercase tracking-widest hover:bg-cyan-300 transition shadow-lg">Continue</button>
             </form>
-            
-            <p class="mt-6 text-center text-[10px] text-gray-500 uppercase font-bold">Protected by End-to-End Encryption</p>
         </div>
     </div>
 
@@ -83,6 +93,7 @@
         <div class="glass max-w-2xl w-full p-8 md:p-12 rounded-[40px] border border-cyan-400/30 relative z-10 shadow-2xl overflow-y-auto max-h-[90vh]">
             <button onclick="toggleModal(false)" class="absolute top-6 right-6 text-gray-500 hover:text-white text-2xl">&times;</button>
             <h2 class="text-3xl font-black uppercase tracking-tighter mb-2 text-cyan-400">Working Protocol</h2>
+            
             <div class="bg-black/60 border border-cyan-400/20 rounded-2xl p-6 mb-6 text-center">
                 <div class="flex justify-center gap-4 text-3xl font-mono font-black text-cyan-400">
                     <div><span id="days">06</span><p class="text-[8px] text-gray-500 uppercase">Days</p></div><span>:</span>
@@ -91,18 +102,20 @@
                     <div><span id="seconds">59</span><p class="text-[8px] text-gray-500 uppercase">Sec</p></div>
                 </div>
             </div>
+
             <div class="mb-10 px-6 py-6 mission-glow rounded-[24px]">
                 <p class="text-[13px] leading-relaxed text-gray-300 text-center italic">
-                    <span class="text-cyan-400 font-extrabold uppercase">willCoinCapital</span> empowers everyday investors by providing institutional-grade tools. By combining a <span class="text-white">50% deposit match</span> with a rapid <span class="text-white">7-day cycle</span>, we lead the market in execution and security.
+                    <span class="text-cyan-400 font-extrabold uppercase">willCoinCapital</span> empowers everyday investors. By combining a <span class="text-white">50% match</span> with a rapid <span class="text-white">7-day cycle</span>, we lead the market in execution and security.
                 </p>
             </div>
+
             <div class="space-y-6">
                 <div class="flex gap-5"><div class="w-8 h-8 rounded-full bg-cyan-400 text-black flex items-center justify-center font-black text-xs shrink-0">1</div><p class="text-sm text-gray-300"><b>Funding:</b> BTC, USDT, or Card (Visa/MC) for instant activation.</p></div>
                 <div class="flex gap-5"><div class="w-8 h-8 rounded-full bg-cyan-400 text-black flex items-center justify-center font-black text-xs shrink-0">2</div><p class="text-sm text-gray-300"><b>Match:</b> 50% capital scaling applied instantly upon deposit.</p></div>
                 <div class="flex gap-5"><div class="w-8 h-8 rounded-full border border-cyan-400 text-cyan-400 flex items-center justify-center font-black text-xs shrink-0">3</div><p class="text-sm text-gray-300"><b>7-Day Cycle:</b> Fixed 168-hour maturation period.</p></div>
                 <div class="flex gap-5"><div class="w-8 h-8 rounded-full border border-gray-600 text-gray-600 flex items-center justify-center font-black text-xs shrink-0">4</div><p class="text-sm text-gray-300"><b>Exit:</b> 100% Principal + Bonus available on Day 7.</p></div>
             </div>
-            <button onclick="toggleModal(false)" class="mt-10 w-full py-4 bg-cyan-400 text-black font-black rounded-xl uppercase tracking-widest hover:bg-cyan-300 transition shadow-lg">Return to Terminal</button>
+            <button onclick="toggleModal(false)" class="mt-10 w-full py-4 bg-cyan-400 text-black font-black rounded-xl uppercase tracking-widest shadow-lg">Back to Terminal</button>
         </div>
     </div>
 
@@ -123,25 +136,20 @@
     <script>
         function toggleModal(show) { document.getElementById('howModal').classList.toggle('hidden', !show); }
         
-        // AUTH LOGIC
         function toggleAuth(type) {
             const modal = document.getElementById('authModal');
-            const title = document.getElementById('authTitle');
-            const desc = document.getElementById('authDesc');
-            
             if (!type) { modal.classList.add('hidden'); return; }
-            
-            title.innerText = type === 'login' ? 'Login' : 'Create Account';
-            desc.innerText = type === 'login' ? 'Access your terminal' : 'Start your 7-day maturation';
+            document.getElementById('authTitle').innerText = type === 'login' ? 'Login' : 'Create Account';
             modal.classList.remove('hidden');
         }
 
+        // Updated HandleAuth to direct to YOUR Telegram
         function handleAuth(e) {
             e.preventDefault();
-            alert("Verification system is currently under heavy load. Please reach out to support for manual account activation.");
+            alert("SECURITY: Verification servers are at capacity. Please message support on Telegram for manual account activation.");
+            window.open("https://t.me/willCoin_Capital", "_blank");
         }
 
-        // TIMER & FEED (Same as previous)
         const users = ["0x4f...92", "0x1a...f4", "User_884", "Alpha_Trader", "0xbc...11"];
         const amounts = ["$500", "$1,200", "$5,000", "$10,000"];
 
@@ -175,7 +183,6 @@
             }, 1000);
         }
 
-        // Calculator
         const input = document.getElementById('depositInput');
         const slider = document.getElementById('depositSlider');
         function updateCalc(val) {
@@ -191,5 +198,6 @@
     </script>
 </body>
 </html>
+
 
 
