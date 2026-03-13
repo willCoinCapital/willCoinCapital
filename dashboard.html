@@ -1,1 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>w illCoin Capital Dashboard</title>
+
+<script>
+
+if(localStorage.getItem("willcoinLoggedIn") !== "true"){
+
+window.location.href = "login.html"
+
+}
+
+</script>
+
+<style>
+
+body{
+background:#050b14;
+font-family:Arial;
+color:white;
+margin:0;
+padding:20px;
+}
+
+.header{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.dashboard-title{
+color:#28d7ff;
+font-size:22px;
+font-weight:bold;
+}
+
+.logout-btn{
+color:white;
+cursor:pointer;
+}
+
+.card{
+background:#0b1422;
+padding:30px;
+border-radius:14px;
+margin-top:20px;
+}
+
+.amount{
+font-size:34px;
+margin-top:10px;
+}
+
+.status{
+color:orange;
+font-size:24px;
+font-weight:bold;
+}
+
+.button{
+background:#2fd3ff;
+color:black;
+padding:14px;
+border:none;
+border-radius:10px;
+margin-top:20px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<div class="dashboard-title">USER DASHBOARD</div>
+
+<div class="logout-btn" onclick="logout()">SIGN OUT</div>
+
+</div>
+
+<p id="welcomeUser"></p>
+
+<div class="card">
+
+<p>TOTAL PORTFOLIO</p>
+
+<div class="amount">$0.00</div>
+
+</div>
+
+<div class="card">
+
+<p>UNLOCKED BONUS</p>
+
+<div class="amount">$0.00</div>
+
+</div>
+
+<div class="card">
+
+<p>CYCLE STATUS</p>
+
+<div class="status">AWAITING ACTIVATION</div>
+
+</div>
+
+<div class="card">
+
+<h2>AWAITING ACTIVATION</h2>
+
+<p>Your account is successfully registered. Please contact your assigned liquidity agent via live support to activate your maturation cycle.</p>
+
+<button class="button">CONNECT WITH AGENT</button>
+
+</div>
+
+<script src="auth.js"></script>
+
+<script>
+
+let user = localStorage.getItem("willcoinUser")
+
+document.getElementById("welcomeUser").innerHTML =
+"Welcome back, " + user
+
+</script>
+
+</body>
+
+</html>
