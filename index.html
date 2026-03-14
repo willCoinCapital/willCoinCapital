@@ -2,33 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sign In - WillCoin Capital</title>
+    <title>WillCoin Capital - Login</title>
     <style>
-        body { background: #0b0e11; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; }
-        .login-card { background: #161a1e; padding: 2rem; border-radius: 12px; text-align: center; border: 1px solid #2b3139; }
-        input { padding: 10px; width: 80%; margin: 10px 0; border-radius: 4px; border: 1px solid #474d57; background: #1e2329; color: white; }
-        button { padding: 10px 20px; background: #00d2ff; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+        body { background: #0b0e11; color: white; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .login-card { background: #161a1e; padding: 30px; border-radius: 15px; border: 1px solid #2b3139; text-align: center; }
+        input { padding: 12px; margin: 15px 0; border-radius: 8px; border: 1px solid #474d57; background: #1e2329; color: white; width: 200px; }
+        button { padding: 10px 20px; background: #00d2ff; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
     </style>
 </head>
 <body>
-
     <div class="login-card">
-        <h2>Sign In</h2>
-        <input type="text" id="nameInput" placeholder="Enter Username">
+        <h2>Enter Username</h2>
+        <input type="text" id="nameBox" placeholder="Username">
         <br>
-        <button onclick="saveAndRedirect()">Login</button>
+        <button onclick="enterSite()">Login</button>
     </div>
 
     <script>
-        function saveAndRedirect() {
-            const name = document.getElementById('nameInput').value;
-            if (name) {
-                // This saves the name to the browser's memory
-                localStorage.setItem('storedUsername', name);
-                // Moves to your dashboard file
+        function enterSite() {
+            const name = document.getElementById('nameBox').value;
+            if(name) {
+                localStorage.setItem('myUsername', name);
                 window.location.href = "dashboard.html";
-            } else {
-                alert("Please enter a name");
             }
         }
     </script>
