@@ -1,38 +1,148 @@
-body {
-    font-family: 'Plus Jakarta Sans', sans-serif;
+body{
+font-family:'Plus Jakarta Sans',sans-serif;
+background:#020817;
+color:white;
+margin:0;
+text-align:center;
 }
 
-/* Glassmorphism Effect */
-.glass-card {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+.navbar{
+display:flex;
+justify-content:space-between;
+padding:20px 40px;
 }
 
-/* Smooth Scrolling Ticker */
-.ticker-wrap {
-    width: 100%;
-    overflow: hidden;
+.logo{
+display:flex;
+align-items:center;
+gap:8px;
+font-weight:800;
 }
 
-.ticker-move {
-    display: flex;
-    gap: 3rem;
-    white-space: nowrap;
-    width: max-content;
-    animation: marquee 30s linear infinite;
+.dot{
+width:10px;
+height:10px;
+background:#22d3ee;
+border-radius:50%;
 }
 
-@keyframes marquee {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); }
+.nav-buttons button{
+margin-left:10px;
+background:none;
+border:none;
+color:white;
+cursor:pointer;
 }
 
-/* Custom Slider Styling */
-input[type="range"] {
-    height: 6px;
-    -webkit-appearance: none;
-    background: #1f2937;
-    border-radius: 10px;
+.signup{
+background:#22d3ee;
+color:black;
+padding:6px 14px;
+border-radius:6px;
+}
+
+.ticker{
+border-top:1px solid #111;
+border-bottom:1px solid #111;
+overflow:hidden;
+}
+
+.ticker-move{
+display:flex;
+gap:30px;
+padding:10px;
+animation:ticker 20s linear infinite;
+}
+
+@keyframes ticker{
+0%{transform:translateX(0)}
+100%{transform:translateX(-50%)}
+}
+
+.hero{
+padding:80px 20px;
+}
+
+.hero span{
+color:#22d3ee;
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+padding:40px;
+}
+
+.card{
+background:#081028;
+padding:20px;
+border-radius:10px;
+}
+
+.calculator{
+background:#081028;
+margin:40px auto;
+padding:30px;
+max-width:400px;
+border-radius:10px;
+}
+
+.results{
+display:flex;
+justify-content:space-between;
+margin-top:20px;
+}
+
+.ledger{
+padding:40px;
+}
+
+.how{
+padding:60px 20px;
+}
+
+.steps{
+display:flex;
+gap:20px;
+justify-content:center;
+}
+
+.step{
+background:#081028;
+padding:20px;
+border-radius:10px;
+width:200px;
+}
+
+.assets{
+padding:60px;
+}
+
+.coins{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:20px;
+}
+
+.coins div{
+background:#081028;
+padding:20px;
+border-radius:10px;
+}
+
+footer{
+margin-top:60px;
+padding:20px;
+color:gray;
+}
+
+.deposit-popup{
+position:fixed;
+bottom:30px;
+left:30px;
+background:#081028;
+padding:15px;
+border-radius:10px;
+display:none;
 }
