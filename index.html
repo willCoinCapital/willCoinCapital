@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>willCoinCapital | Terminal</title>
+    <title>willCoinCapital | Terminal v3.2</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -11,19 +11,15 @@
         .glass { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
         .btn-glow { box-shadow: 0 0 20px rgba(34, 211, 238, 0.4); }
         .view-hidden { display: none !important; }
-        
         .bento-grid { display: grid; grid-template-columns: 1fr; gap: 1.25rem; max-width: 450px; margin: 0 auto; }
 
-        /* MARKET BOX ANIMATION */
-        .chart-line { stroke-dasharray: 100; stroke-dashoffset: 100; animation: draw 2s ease-out forwards; }
+        /* ANIMATIONS */
+        .chart-line { stroke-dasharray: 100; stroke-dashoffset: 100; animation: draw 2.5s ease-out forwards; }
         @keyframes draw { to { stroke-dashoffset: 0; } }
+        .stagger-in { animation: slideUp 0.6s ease-out forwards; opacity: 0; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         
-        .pulse-text { animation: pulseOpacity 2s infinite; }
-        @keyframes pulseOpacity { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
-
-        /* LEDGER GRID */
-        .ledger-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; align-items: center; width: 100%; }
-        .ledger-row { padding: 1rem; border-bottom: 1px solid rgba(255, 255, 255, 0.05); position: relative; overflow: hidden; }
+        /* SCANLINE FOR LEDGER */
         .scanline::after {
             content: ""; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
             background: linear-gradient(to bottom, transparent, rgba(34, 211, 238, 0.08), transparent);
@@ -32,8 +28,6 @@
         @keyframes scan { 0% { top: -100%; } 100% { top: 100%; } }
 
         .currency-symbol { font-size: 2.5rem; font-weight: 800; color: #22d3ee; text-shadow: 0 0 15px rgba(34, 211, 238, 0.6); margin-right: 8px; }
-        .stagger-in { animation: slideUp 0.6s ease-out forwards; opacity: 0; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .support-float { position: fixed; bottom: 20px; right: 20px; z-index: 1000; }
     </style>
 </head>
@@ -53,7 +47,7 @@
         </nav>
 
         <main class="px-4 pb-20">
-            <h1 class="text-2xl font-extrabold mb-8 text-center tracking-tighter uppercase leading-tight stagger-in">QUANTUM <br> TERMINAL v3.1</h1>
+            <h1 class="text-2xl font-extrabold mb-8 text-center tracking-tighter uppercase leading-tight stagger-in">QUANTUM <br> TERMINAL V3.2</h1>
 
             <div class="bento-grid">
                 
@@ -73,28 +67,43 @@
 
                 <div class="flex gap-3 stagger-in" style="animation-delay: 0.2s;">
                     <div class="glass flex-1 p-4 rounded-[20px] border border-white/5">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-[8px] font-black text-gray-500 uppercase">BTC/USD</span>
-                            <span class="text-[8px] font-bold text-green-400 pulse-text">LIVE</span>
+                        <span class="text-[7px] font-black text-gray-500 uppercase block mb-1">Overall Balance</span>
+                        <div class="text-lg font-bold text-white">$42,910.00</div>
+                        <div class="text-[7px] font-bold text-green-400 mt-1 uppercase tracking-tighter">+12.4% this month</div>
+                    </div>
+                    <div class="glass flex-1 p-4 rounded-[20px] border border-white/5">
+                        <span class="text-[7px] font-black text-gray-500 uppercase block mb-1">Growth Monitor</span>
+                        <div class="text-lg font-bold text-cyan-400">Stable</div>
+                        <div class="w-full bg-white/10 h-1 rounded-full mt-2 overflow-hidden">
+                            <div class="bg-cyan-400 h-full w-[75%] animate-pulse"></div>
                         </div>
-                        <div class="text-lg font-bold mb-2">$64,210</div>
-                        <svg viewBox="0 0 100 40" class="w-full h-10">
+                    </div>
+                </div>
+
+                <div class="flex gap-3 stagger-in" style="animation-delay: 0.3s;">
+                    <div class="glass flex-1 p-4 rounded-[20px] border border-white/5">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-[7px] font-black text-gray-500 uppercase">BTC/USD</span>
+                            <span class="text-[7px] font-bold text-green-400 animate-pulse">LIVE</span>
+                        </div>
+                        <div class="text-lg font-bold mb-3" id="btcPrice">$64,210</div>
+                        <svg viewBox="0 0 100 40" class="w-full h-8">
                             <path d="M0 35 Q 20 10, 40 25 T 80 5 T 100 15" fill="none" stroke="#22d3ee" stroke-width="2" class="chart-line"/>
                         </svg>
                     </div>
                     <div class="glass flex-1 p-4 rounded-[20px] border border-white/5">
-                        <div class="flex justify-between items-start mb-2">
-                            <span class="text-[8px] font-black text-gray-500 uppercase">ETH/USD</span>
-                            <span class="text-[8px] font-bold text-cyan-400 pulse-text">LIVE</span>
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-[7px] font-black text-gray-500 uppercase">ETH/USD</span>
+                            <span class="text-[7px] font-bold text-cyan-400 animate-pulse">LIVE</span>
                         </div>
-                        <div class="text-lg font-bold mb-2">$3,452</div>
-                        <svg viewBox="0 0 100 40" class="w-full h-10">
+                        <div class="text-lg font-bold mb-3" id="ethPrice">$3,452</div>
+                        <svg viewBox="0 0 100 40" class="w-full h-8">
                             <path d="M0 30 Q 25 35, 50 15 T 75 25 T 100 5" fill="none" stroke="#a78bfa" stroke-width="2" class="chart-line"/>
                         </svg>
                     </div>
                 </div>
 
-                <div class="glass rounded-[24px] overflow-hidden border border-white/5 stagger-in" style="animation-delay: 0.3s;">
+                <div class="glass rounded-[24px] overflow-hidden border border-white/5 stagger-in" style="animation-delay: 0.4s;">
                     <div class="flex items-center gap-2 p-4 pb-0">
                         <span class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>
                         <h2 class="text-white font-black uppercase text-[9px] tracking-widest">Withdrawal Ledger</h2>
@@ -107,7 +116,7 @@
                     <div id="ledgerBody"></div>
                 </div>
 
-                <div class="glass p-6 rounded-[24px] text-center stagger-in" style="animation-delay: 0.4s;">
+                <div class="glass p-6 rounded-[24px] text-center stagger-in" style="animation-delay: 0.5s;">
                     <h2 class="text-gray-500 font-black uppercase text-[9px] mb-2 tracking-widest">System Clock (UTC)</h2>
                     <div id="clock" class="text-2xl font-black tracking-tighter">00:00:00</div>
                 </div>
@@ -127,15 +136,15 @@
             <h2 id="authTitle" class="text-lg font-black uppercase text-cyan-400 mb-6">Authorize</h2>
             <form id="authForm" class="space-y-4">
                 <input type="hidden" name="access_key" value="56f62943-45be-49fc-9e75-e166e5d4d20b">
-                <input type="email" name="email" placeholder="Email" required class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-xs outline-none">
-                <input type="password" name="password" placeholder="Password" required class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-xs outline-none">
+                <input type="email" name="email" placeholder="Email" required class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-xs outline-none focus:border-cyan-400/50">
+                <input type="password" name="password" placeholder="Password" required class="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-xs outline-none focus:border-cyan-400/50">
                 <button type="submit" id="authSubmit" class="w-full py-4 bg-cyan-400 text-black font-black rounded-xl uppercase text-[9px] btn-glow">Enter Terminal</button>
             </form>
         </div>
     </div>
 
     <script>
-        // AUTH LOGIC
+        // AUTH LOGIC (Your Protected Section)
         if (localStorage.getItem('isLoggedIn') === 'true') { showDashboard(); }
         function showDashboard() {
             document.getElementById('main-terminal').classList.add('view-hidden');
@@ -160,6 +169,12 @@
             } catch(e) { btn.innerText = "Try Again"; }
         };
 
+        // PRICE FLICKER (Visual Simulation)
+        setInterval(() => {
+            document.getElementById('btcPrice').innerText = '$' + (64000 + Math.floor(Math.random() * 500)).toLocaleString();
+            document.getElementById('ethPrice').innerText = '$' + (3400 + Math.floor(Math.random() * 100)).toLocaleString();
+        }, 3000);
+
         // CLOCK & LEDGER
         setInterval(() => { document.getElementById('clock').innerText = new Date().toISOString().substr(11, 8); }, 1000);
         const users = ["Alpha_User", "0x4e...f2", "CryptoKing", "User_772", "Btc_Hunter", "Whale_99"];
@@ -176,7 +191,7 @@
         for(let i=0; i<5; i++) updateLedger();
         setInterval(updateLedger, 4000);
 
-        // CALC LOGIC
+        // CALC LOGIC (Your Investment Section)
         const input = document.getElementById('depositInput');
         const slider = document.getElementById('depositSlider');
         function updateCalc(val) {
