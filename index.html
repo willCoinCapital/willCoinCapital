@@ -16,10 +16,9 @@
             filter: blur(60px); z-index: 1; pointer-events: none;
         }
 
-        /* SIDE-BY-SIDE CONTAINER */
         .asset-container {
-            display: flex; gap: 20px; justify-content: center; align-items: center;
-            position: absolute; top: 45%; left: 50%; transform: translate(-50%, -50%);
+            display: flex; gap: 24px; justify-content: center; align-items: center;
+            position: absolute; top: 48%; left: 50%; transform: translate(-50%, -50%);
             width: 100%; z-index: 10;
         }
 
@@ -27,18 +26,18 @@
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(15px);
             border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            width: 130px; height: 130px; /* ENLARGED */
+            border-radius: 28px;
+            width: 135px; height: 135px;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             animation: floatIcon 5s ease-in-out infinite;
         }
 
         @keyframes floatIcon {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+            50% { transform: translateY(-12px); }
         }
 
-        .label-text { font-size: 12px; font-weight: 800; color: rgba(255,255,255,0.4); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.1em; }
+        .label-text { font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.4); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.15em; }
         .btn-recover { border: 1px solid rgba(20, 184, 166, 0.5); color: #14b8a6; }
         .btn-create { background: linear-gradient(to right, #14b8a6, #22d3ee); color: #000; box-shadow: 0 10px 30px -10px rgba(20, 184, 166, 0.5); }
         .view-hidden { display: none !important; }
@@ -53,30 +52,30 @@
         <div class="bg-white/5 border border-white/10 px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest inline-block text-gray-400">
             Trade crypto anytime
         </div>
-        <h1 class="text-[36px] font-extrabold tracking-tighter leading-tight text-white pt-4">
-            Power Up Your <br> <span class="text-cyan-400">Crypto Journey</span>
+        <h1 class="text-[34px] font-extrabold tracking-tighter leading-tight text-white pt-4">
+            Own Your Assets <br> <span class="text-cyan-400">Invest Your Assets</span>
         </h1>
     </header>
 
     <div class="asset-container">
         <div class="asset-card">
             <span class="label-text">btc</span>
-            <svg width="45" height="45" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
-                <path d="M63.04 39.74c-4.27 17.13-21.72 27.56-38.85 23.3-17.13-4.26-27.56-21.71-23.3-38.85C5.16 7.06 22.61-3.37 39.74.89c17.13 4.27 27.56 21.72 23.3 38.85zm-11.45-12.2c.64-4.29-2.63-6.6-7.1-8.13l1.45-5.83-3.55-.88-1.41 5.67c-.93-.23-1.89-.45-2.84-.66l1.42-5.71-3.55-.89-1.45 5.82c-.77-.18-1.53-.35-2.26-.53l.01-.03-4.9-.12-.95 3.79s2.63.6 2.58.64c1.44.36 1.7.1.31 1.95l-3.14 12.59c.1.03.24.06.38.12-.11-.03-.24-.06-.33-.09l-4.39 17.65 3.55.89 1.45-5.83c.97.26 1.91.5 2.82.72l-1.43 5.76 3.55.88 1.45-5.83c6.07 1.15 10.63.69 12.55-4.81 1.54-4.42-.08-6.98-3.27-8.64 2.33-.54 4.08-2.07 4.55-5.23zm-8.14 11.41c-1.1 4.42-8.56 2.03-10.98 1.43l1.96-7.85c2.42.6 10.16 1.79 9.02 6.42zm1.1-11.48c-1.01 4.03-7.23 1.98-9.25 1.48l1.78-7.12c2.01.5 8.51 1.44 7.47 5.64z" fill="#F7931A"/>
+            <svg width="50" height="50" viewBox="0 0 32 32">
+                <path d="M22.76 11.42c.45-3.005-1.84-4.62-4.97-5.7l1.015-4.07-2.475-.617-1.015 4.07c-.65-.163-1.32-.315-1.983-.464l1.022-4.1-2.477-.616-1.015 4.07c-.538-.124-1.066-.247-1.578-.376l.003-.014-3.417-.853-.66 2.645s1.84.42 1.8.446c1.003.25 1.185.914 1.155 1.44l-1.157 4.643c.07.017.16.042.26.082-.084-.02-.175-.043-.264-.065l-1.62 6.5c-.123.305-.436.762-1.14.587.025.036-1.8-.45-1.8-.45l-1.23 2.834 3.224.804c.6.15 1.183.305 1.758.453l-1.025 4.116 2.475.617 1.015-4.068c.676.183 1.332.355 1.975.52l-1.02 4.1 2.477.617 1.025-4.113c4.22.8 7.39.477 8.724-3.342 1.076-3.076-.053-4.85-2.28-6.004 1.623-.375 2.847-1.442 3.17-3.645zm-5.67 8c-.766 3.074-5.947 1.412-7.627.994l1.36-5.45c1.68.42 7.082 1.25 6.267 4.456zm1.112-7.983c-.7 2.8-5.02 1.38-6.42 1.03l1.233-4.945c1.4.35 5.925 1.005 5.187 3.915z" fill="#F7931A"/>
             </svg>
         </div>
 
         <div class="asset-card" style="animation-delay: 0.5s;">
             <span class="label-text">eth</span>
-            <svg width="45" height="45" viewBox="0 0 256 417" xmlns="http://www.w3.org/2000/svg">
-                <path d="M127.961 0l-2.795 9.5v275.668l2.795 2.79 127.962-75.638z" fill="#343434"/><path d="M127.962 0L0 212.32l127.962 75.638V154.158z" fill="#8C8C8C"/><path d="M127.961 312.187l-1.575 1.92v98.199l1.575 4.59 128.038-180.32z" fill="#3C3C3B"/><path d="M127.962 416.896v-104.72L0 236.585z" fill="#8C8C8C"/>
+            <svg width="42" height="50" viewBox="0 0 256 417">
+                <path d="M127.961 0l-2.795 9.5v275.668l2.795 2.79 127.962-75.638z" fill="#343434"/><path d="M127.962 0L0 212.32l127.962 75.638V154.158z" fill="#8C8C8C"/><path d="M127.961 312.187l-1.575 1.92v98.199l1.575 4.59 128.038-180.32z" fill="#3C3C3B"/><path d="M127.962 416.896v-104.72L0 236.585z" fill="#8C8C8C"/><path d="M127.961 279.102l127.962-75.638-127.962-58.734z" fill="#141414"/><path d="M0 212.32l127.962 75.638V144.73z" fill="#393939"/>
             </svg>
         </div>
     </div>
 
     <div class="w-full max-w-sm space-y-4 z-20">
-        <button onclick="toggleAuth('signup')" class="w-full py-4 rounded-2xl btn-recover text-[11px] font-black uppercase tracking-widest">Recover Account</button>
-        <button onclick="toggleAuth('signup')" class="w-full py-4 rounded-2xl btn-create text-[11px] font-black uppercase tracking-widest">Create Account</button>
+        <button onclick="toggleAuth('signup')" class="w-full py-4 rounded-2xl btn-recover text-[11px] font-black uppercase tracking-widest active:scale-95 transition-transform">Recover Account</button>
+        <button onclick="toggleAuth('signup')" class="w-full py-4 rounded-2xl btn-create text-[11px] font-black uppercase tracking-widest active:scale-95 transition-transform">Create Account</button>
         <div class="text-center pt-4">
             <button onclick="toggleAuth('login')" class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Already Have An Account? <span class="text-white ml-1">Log In</span></button>
         </div>
