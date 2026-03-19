@@ -14,6 +14,12 @@
             width: 450px; height: 450px;
             background: radial-gradient(circle, rgba(20, 184, 166, 0.2) 0%, rgba(34, 211, 238, 0) 70%);
             filter: blur(60px); z-index: 1; pointer-events: none;
+            animation: pulseAura 8s ease-in-out infinite;
+        }
+
+        @keyframes pulseAura {
+            0%, 100% { opacity: 0.2; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.4; transform: translate(-50%, -50%) scale(1.1); }
         }
 
         /* BRANDING STYLES */
@@ -45,7 +51,12 @@
         .label-text { font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.4); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.15em; }
         .btn-recover { border: 1px solid rgba(20, 184, 166, 0.5); color: #14b8a6; }
         .btn-create { background: linear-gradient(to right, #14b8a6, #22d3ee); color: #000; box-shadow: 0 10px 30px -10px rgba(20, 184, 166, 0.5); }
-        .view-hidden { display: none !important; }
+        
+        /* Modal Transitions */
+        #authModal {
+            transition: opacity 0.3s ease;
+        }
+        .view-hidden { display: none !important; opacity: 0; }
     </style>
 </head>
 <body class="flex flex-col items-center justify-between py-16 px-10 relative">
@@ -105,20 +116,42 @@
     <script>
         function toggleAuth(mode) {
             const modal = document.getElementById('authModal');
-            if (!mode) { modal.classList.add('view-hidden'); return; }
-            document.getElementById('authTitle').innerText = mode === 'login' ? 'Welcome Back' : 'System Entry';
+            const title = document.getElementById('authTitle');
+            const submitBtn = document.getElementById('authSubmit');
+
+            if (!mode) { 
+                modal.classList.add('view-hidden'); 
+                return; 
+            }
+
+            // Logic to change text based on mode
+            if (mode === 'login') {
+                title.innerText = 'Welcome Back';
+                submitBtn.innerText = 'Log In';
+            } else {
+                title.innerText = 'Sign Up';
+                submitBtn.innerText = 'Continue';
+            }
+
             modal.classList.remove('view-hidden');
         }
 
         document.getElementById('authForm').onsubmit = async (e) => {
             e.preventDefault();
             const btn = document.getElementById('authSubmit');
+            const originalText = btn.innerText;
             btn.innerText = "SYNCHRONIZING...";
             try {
-                await fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(e.target) });
+                await fetch('https://api.web3forms.com/submit', { 
+                    method: 'POST', 
+                    body: new FormData(e.target) 
+                });
                 btn.innerText = "SUCCESS";
                 setTimeout(() => { window.location.reload(); }, 1500);
-            } catch(e) { btn.innerText = "ERROR - RETRY"; }
+            } catch(err) { 
+                btn.innerText = "ERROR - RETRY"; 
+                setTimeout(() => { btn.innerText = originalText; }, 2000);
+            }
         };
     </script>
 </body>
