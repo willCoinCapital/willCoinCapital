@@ -16,6 +16,11 @@
             filter: blur(60px); z-index: 1; pointer-events: none;
         }
 
+        /* BRANDING STYLES */
+        .brand-logo { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; text-transform: uppercase; }
+        .brand-willcoin { color: #FFFFFF; }
+        .brand-capital { color: #22d3ee; }
+
         .asset-container {
             display: flex; gap: 24px; justify-content: center; align-items: center;
             position: absolute; top: 48%; left: 50%; transform: translate(-50%, -50%);
@@ -48,9 +53,12 @@
     <div class="main-aura"></div>
 
     <header class="text-center z-20 space-y-3">
-        <div class="text-[11px] font-bold text-gray-500 uppercase tracking-[0.4em]">willCoinCapital</div>
+        <div class="brand-logo">
+            <span class="brand-willcoin">WILLCOIN</span><span class="brand-capital">CAPITAL</span>
+        </div>
+        
         <div class="bg-white/5 border border-white/10 px-4 py-1 rounded-full text-[9px] font-black uppercase tracking-widest inline-block text-gray-400">
-            Trade crypto anytime
+            • Trade crypto anytime
         </div>
         <h1 class="text-[34px] font-extrabold tracking-tighter leading-tight text-white pt-4">
             Own Your Assets <br> <span class="text-cyan-400">Invest Your Assets</span>
