@@ -1,102 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard | willCoinCapital</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-<style>
-body { background:#000; font-family:'Plus Jakarta Sans',sans-serif; }
-.glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); border:1px solid rgba(255,255,255,0.08);}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | willCoinCapital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { background:#000; font-family:'Plus Jakarta Sans',sans-serif; }
+        .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); border:1px solid rgba(255,255,255,0.08);}
+    </style>
 </head>
 <body class="p-6 text-white">
 
-<nav class="flex justify-between items-center mb-8">
-    <h1 class="font-black text-xl">WILLCOIN<span class="text-cyan-400">CAPITAL</span></h1>
-    <div class="flex items-center gap-3">
-        <button onclick="logout()" class="text-xs text-gray-400 hover:text-white transition cursor-pointer">Logout</button>
-        <div class="w-10 h-10 rounded-full bg-cyan-400"></div>
+    <nav class="flex justify-between items-center mb-8">
+        <h1 class="font-black text-xl">WILLCOIN<span class="text-cyan-400">CAPITAL</span></h1>
+        <div class="flex items-center gap-3">
+            <button onclick="logout()" class="text-xs text-gray-400 hover:text-white transition cursor-pointer">Logout</button>
+            <div class="w-10 h-10 rounded-full bg-cyan-400"></div>
+        </div>
+    </nav>
+
+    <h1 class="text-3xl font-bold mb-1">Welcome Back, Investor</h1>
+    <p class="text-gray-500 text-xs mb-6">Here is your portfolio overview with the latest market data.</p>
+
+    <div class="glass rounded-3xl p-6 mb-6">
+        <p class="text-gray-400 text-xs">TOTAL BALANCE</p>
+        <h2 id="balance" class="text-4xl font-bold mt-2">$0.00</h2>
+        <div class="flex gap-2 mt-4">
+            <button onclick="handleDeposit()" class="flex-1 bg-cyan-400 text-black py-2 rounded-xl font-bold">Deposit</button>
+            <button class="flex-1 bg-gray-800 py-2 rounded-xl">Withdraw</button>
+            <button class="flex-1 bg-gray-800 py-2 rounded-xl">Invest</button>
+        </div>
     </div>
-</nav>
 
-<h1 class="text-3xl font-bold mb-1">Welcome Back, Investor</h1>
-<p class="text-gray-500 text-xs mb-6">Here is your portfolio overview with the latest market data.</p>
-
-<div class="glass rounded-3xl p-6 mb-6">
-    <p class="text-gray-400 text-xs">TOTAL BALANCE</p>
-    <h2 id="balance" class="text-4xl font-bold mt-2">$0.00</h2>
-    <div class="flex gap-2 mt-4">
-        <button class="flex-1 bg-cyan-400 text-black py-2 rounded-xl font-bold">Deposit</button>
-        <button class="flex-1 bg-gray-800 py-2 rounded-xl">Withdraw</button>
-        <button class="flex-1 bg-gray-800 py-2 rounded-xl">Invest</button>
+    <div class="grid grid-cols-3 gap-3 mb-6">
+        <div class="glass rounded-2xl p-4"><p class="text-gray-400 text-xs">Total Profit</p><h3 id="statProfit" class="text-green-400 font-bold">+$0.00</h3></div>
+        <div class="glass rounded-2xl p-4"><p class="text-gray-400 text-xs">Active Investments</p><h3 id="statActive">$0.00</h3></div>
+        <div class="glass rounded-2xl p-4"><p class="text-gray-400 text-xs">Completed Trades</p><h3 id="statTrades">0</h3></div>
     </div>
-</div>
 
-<div class="grid grid-cols-3 gap-3 mb-6">
-    <div class="glass rounded-2xl p-4"><p class="text-gray-400 text-xs">Total Profit</p><h3 id="statProfit" class="text-green-400 font-bold">+$375.00</h3></div>
-    <div class="glass rounded-2xl p-4"><p class="text-gray-400 text-xs">Active Investments</p><h3 id="statActive">$500.00</h3></div>
-    <div class="glass rounded-2xl p-4"><p class="text-gray-400 text-xs">Completed Trades</p><h3 id="statTrades">3</h3></div>
-</div>
+    <div class="glass rounded-3xl p-5 mb-6">
+        <div class="flex justify-between mb-3"><h3 class="font-bold">Active Investment</h3><button class="text-cyan-400 text-sm">Claim Profit</button></div>
+        <p class="text-gray-400 text-sm">Plan: 7-Day Investment</p>
+        <h2 id="invAmount" class="text-2xl font-bold">$0.00 <span id="invProfit" class="text-gray-500">+ $0.00</span></h2>
+        <p class="text-gray-400 text-sm">Time Left ↓ --</p>
+        <p id="invStatus" class="text-gray-500 text-sm">Status: IDLE</p>
+        <iframe class="w-full h-40 mt-3 rounded-xl" src="https://s.tradingview.com/widgetembed/?symbol=BTCUSD&theme=dark"></iframe>
+    </div>
 
-<div class="glass rounded-3xl p-5 mb-6">
-    <div class="flex justify-between mb-3"><h3 class="font-bold">Active Investment</h3><button class="text-cyan-400 text-sm">Claim Profit</button></div>
-    <p class="text-gray-400 text-sm">Plan: 7-Day Investment</p>
-    <h2 id="invAmount" class="text-2xl font-bold">$500.00 <span id="invProfit" class="text-green-400">+ $75.00</span></h2>
-    <p class="text-gray-400 text-sm">Time Left ↓ 4d 12h</p>
-    <p id="invStatus" class="text-green-400 text-sm">Status: RUNNING</p>
-    <iframe class="w-full h-40 mt-3 rounded-xl" src="https://s.tradingview.com/widgetembed/?symbol=BTCUSD&theme=dark"></iframe>
-</div>
+    <div class="glass rounded-3xl p-5 mb-6">
+        <h3 class="font-bold mb-3">Transaction History</h3>
+        <table class="w-full text-sm">
+            <thead class="text-gray-500 text-xs"><tr><th class="text-left">Date</th><th class="text-left">Type</th><th class="text-left">Amount</th><th class="text-right">Status</th></tr></thead>
+            <tbody id="txBody" class="space-y-2">
+                </tbody>
+        </table>
+    </div>
 
-<div class="glass rounded-3xl p-5 mb-6">
-    <h3 class="font-bold mb-3">Transaction History</h3>
-    <table class="w-full text-sm">
-        <thead class="text-gray-500 text-xs"><tr><th class="text-left">Date</th><th class="text-left">Type</th><th class="text-left">Amount</th><th class="text-right">Status</th></tr></thead>
-        <tbody id="txBody" class="space-y-2">
-            <tr><td>Mar 19</td><td>Profit</td><td>$75</td><td class="text-green-400 text-right">Completed</td></tr>
-            <tr><td>Mar 19</td><td>Investment</td><td>-$500</td><td class="text-blue-400 text-right">Active</td></tr>
-            <tr><td>Mar 18</td><td>Deposit</td><td>$700</td><td class="text-green-400 text-right">Completed</td></tr>
-        </tbody>
-    </table>
-</div>
+    <script>
+        const userEmail = localStorage.getItem("willcoinUser");
+        
+        // Ensure every user starts with at least $100.00
+        function getBalance() {
+            let saved = localStorage.getItem("balance_" + userEmail);
+            return saved ? parseFloat(saved) : 100.00; 
+        }
 
-<script>
-const userEmail = localStorage.getItem("willcoinUser");
-const isNewUser = localStorage.getItem("isNewUser_" + userEmail);
-let targetBalance = 1275.00;
+        let targetBalance = getBalance();
 
-if (isNewUser === "true") {
-    // Dynamic persistence
-    targetBalance = parseFloat(localStorage.getItem("balance_" + userEmail)) || 100.00;
-    
-    // Reset Stats for new user account
-    document.getElementById("statProfit").innerText = "+$0.00";
-    document.getElementById("statActive").innerText = "$0.00";
-    document.getElementById("statTrades").innerText = "0";
+        function updateUI() {
+            // Animate Balance
+            let b = 0;
+            let i = setInterval(() => {
+                b += (targetBalance / 40);
+                document.getElementById("balance").innerText = "$" + b.toFixed(2);
+                if (b >= targetBalance) { 
+                    clearInterval(i); 
+                    document.getElementById("balance").innerText = "$" + targetBalance.toFixed(2); 
+                }
+            }, 30);
 
-    // Reset Investment Card
-    document.getElementById("invAmount").innerHTML = `$0.00 <span class="text-gray-500">+ $0.00</span>`;
-    document.getElementById("invStatus").innerText = "Status: IDLE";
-    document.getElementById("invStatus").className = "text-gray-500 text-sm";
+            // History always shows the $100 bonus
+            const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            let historyHTML = `<tr><td>${date}</td><td>Signup Bonus</td><td class="text-green-400">+$100.00</td><td class="text-green-400 text-right">Completed</td></tr>`;
+            
+            // Add any previous deposits stored for this session
+            const deposits = JSON.parse(localStorage.getItem("deposits_" + userEmail) || "[]");
+            deposits.forEach(d => {
+                historyHTML += `<tr><td>${d.date}</td><td>Deposit</td><td class="text-green-400">+$${d.amount}</td><td class="text-green-400 text-right">Completed</td></tr>`;
+            });
+            
+            document.getElementById("txBody").innerHTML = historyHTML;
+        }
 
-    // Show only Signup Bonus in Transaction History
-    const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    document.getElementById("txBody").innerHTML = `<tr><td>${date}</td><td>Signup Bonus</td><td class="text-green-400">+$100.00</td><td class="text-green-400 text-right">Completed</td></tr>`;
-}
+        // Crosscheck logic: Every deposit adds to the $100 base
+        function handleDeposit() {
+            const amount = prompt("Enter Deposit Amount (USD):");
+            if (amount && !isNaN(amount)) {
+                let current = getBalance();
+                let newBalance = current + parseFloat(amount); // Math Addition
+                
+                // Save New Balance
+                localStorage.setItem("balance_" + userEmail, newBalance.toFixed(2));
+                
+                // Log Transaction
+                const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+                const deposits = JSON.parse(localStorage.getItem("deposits_" + userEmail) || "[]");
+                deposits.push({ date: date, amount: parseFloat(amount).toFixed(2) });
+                localStorage.setItem("deposits_" + userEmail, JSON.stringify(deposits));
 
-// Smooth Balance Animation
-let b = 0;
-let i = setInterval(() => {
-    b += (targetBalance / 40);
-    document.getElementById("balance").innerText = "$" + b.toFixed(2);
-    if (b >= targetBalance) { clearInterval(i); document.getElementById("balance").innerText = "$" + targetBalance.toFixed(2); }
-}, 30);
+                // Refresh Page to see update
+                location.reload();
+            }
+        }
 
-function logout() {
-    localStorage.removeItem("willcoinLoggedIn");
-    window.location.href = "index.html"; 
-}
-</script>
+        updateUI();
+
+        function logout() {
+            localStorage.removeItem("willcoinLoggedIn");
+            window.location.href = "index.html"; 
+        }
+    </script>
 </body>
 </html>
