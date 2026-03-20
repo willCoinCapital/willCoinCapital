@@ -16,7 +16,7 @@ body { background:#000; font-family:'Plus Jakarta Sans',sans-serif; }
 <nav class="flex justify-between items-center mb-8">
     <h1 class="font-black text-xl">WILLCOIN<span class="text-cyan-400">CAPITAL</span></h1>
     <div class="flex items-center gap-3">
-        <button onclick="logout()" class="text-xs text-gray-400 hover:text-white transition">Logout</button>
+        <button onclick="logout()" class="text-xs text-gray-400 hover:text-white transition cursor-pointer">Logout</button>
         <div class="w-10 h-10 rounded-full bg-cyan-400"></div>
     </div>
 </nav>
@@ -49,15 +49,15 @@ body { background:#000; font-family:'Plus Jakarta Sans',sans-serif; }
     </div>
 </div>
 
-<div class="glass rounded-3xl p-5 mb-6">
+<div id="activeInvCard" class="glass rounded-3xl p-5 mb-6">
     <div class="flex justify-between mb-3">
         <h3 class="font-bold">Active Investment</h3>
         <button class="text-cyan-400 text-sm">Claim Profit</button>
     </div>
     <p class="text-gray-400 text-sm">Plan: 7-Day Investment</p>
-    <h2 class="text-2xl font-bold">$500.00 <span class="text-green-400">+ $75.00</span></h2>
+    <h2 id="invAmountDisplay" class="text-2xl font-bold">$500.00 <span class="text-green-400">+ $75.00</span></h2>
     <p class="text-gray-400 text-sm">Time Left ↓ 4d 12h</p>
-    <p class="text-green-400 text-sm">Status: RUNNING</p>
+    <p id="invStatus" class="text-green-400 text-sm">Status: RUNNING</p>
     <iframe class="w-full h-40 mt-3 rounded-xl" src="https://s.tradingview.com/widgetembed/?symbol=BTCUSD&theme=dark"></iframe>
 </div>
 
@@ -81,21 +81,28 @@ body { background:#000; font-family:'Plus Jakarta Sans',sans-serif; }
 </div>
 
 <script>
-// INITIAL LOGIC FOR SIGNUP BONUS
-const isNewUser = localStorage.getItem("isNewUser");
-let targetBalance = 1275;
+// LOAD USER DATA
+const email = localStorage.getItem("willcoinUser");
+const isNewUser = localStorage.getItem("isNewUser_" + email);
+let targetBalance = 1275.00;
 
 if (isNewUser === "true") {
-    targetBalance = 100;
-    // Set Stats to zero for new user
+    // 1. Set the Balance to $100
+    targetBalance = parseFloat(localStorage.getItem("balance_" + email)) || 100.00;
+
+    // 2. Set Stats to 0
     document.getElementById("statProfit").innerText = "+$0.00";
     document.getElementById("statActive").innerText = "$0.00";
     document.getElementById("statTrades").innerText = "0";
-    
-    // Clear dummy history and add Bonus
-    const txBody = document.getElementById("txBody");
+
+    // 3. Reset Active Investment Card
+    document.getElementById("invAmountDisplay").innerHTML = `$0.00 <span class="text-gray-500">+ $0.00</span>`;
+    document.getElementById("invStatus").innerText = "Status: IDLE";
+    document.getElementById("invStatus").className = "text-gray-500 text-sm";
+
+    // 4. Update Table to only show Bonus
     const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
-    txBody.innerHTML = `
+    document.getElementById("txBody").innerHTML = `
         <tr>
             <td>${date}</td>
             <td>Signup Bonus</td>
@@ -108,7 +115,7 @@ if (isNewUser === "true") {
 // Balance animation
 let b = 0;
 let i = setInterval(() => {
-    b += (targetBalance / 50); // smooth increment
+    b += (targetBalance / 40);
     document.getElementById("balance").innerText = "$" + b.toFixed(2);
     if (b >= targetBalance) {
         clearInterval(i);
@@ -116,9 +123,9 @@ let i = setInterval(() => {
     }
 }, 30);
 
-// LOGOUT FUNCTION
+// LOGOUT: Only removes the session, keeps the user's data in the browser
 function logout() {
-    localStorage.clear();
+    localStorage.removeItem("willcoinLoggedIn");
     window.location.href = "index.html"; 
 }
 </script>
