@@ -4,23 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard | willCoinCapital</title>
-
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
-
 <style>
 body { background:#000; font-family:'Plus Jakarta Sans',sans-serif; }
 .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); border:1px solid rgba(255,255,255,0.08);}
 </style>
 </head>
-
 <body class="p-6 text-white">
 
-<!-- NAV -->
 <nav class="flex justify-between items-center mb-8">
     <h1 class="font-black text-xl">WILLCOIN<span class="text-cyan-400">CAPITAL</span></h1>
     <div class="flex items-center gap-3">
-        <span class="text-xs text-gray-400">Logout</span>
+        <button onclick="logout()" class="text-xs text-gray-400 hover:text-white transition">Logout</button>
         <div class="w-10 h-10 rounded-full bg-cyan-400"></div>
     </div>
 </nav>
@@ -28,11 +24,9 @@ body { background:#000; font-family:'Plus Jakarta Sans',sans-serif; }
 <h1 class="text-3xl font-bold mb-1">Welcome Back, Investor</h1>
 <p class="text-gray-500 text-xs mb-6">Here is your portfolio overview with the latest market data.</p>
 
-<!-- BALANCE -->
 <div class="glass rounded-3xl p-6 mb-6">
     <p class="text-gray-400 text-xs">TOTAL BALANCE</p>
     <h2 id="balance" class="text-4xl font-bold mt-2">$0.00</h2>
-
     <div class="flex gap-2 mt-4">
         <button class="flex-1 bg-cyan-400 text-black py-2 rounded-xl font-bold">Deposit</button>
         <button class="flex-1 bg-gray-800 py-2 rounded-xl">Withdraw</button>
@@ -40,42 +34,35 @@ body { background:#000; font-family:'Plus Jakarta Sans',sans-serif; }
     </div>
 </div>
 
-<!-- STATS -->
 <div class="grid grid-cols-3 gap-3 mb-6">
     <div class="glass rounded-2xl p-4">
         <p class="text-gray-400 text-xs">Total Profit</p>
-        <h3 class="text-green-400 font-bold">+$375.00</h3>
+        <h3 id="statProfit" class="text-green-400 font-bold">+$375.00</h3>
     </div>
     <div class="glass rounded-2xl p-4">
         <p class="text-gray-400 text-xs">Active Investments</p>
-        <h3>$500.00</h3>
+        <h3 id="statActive">$500.00</h3>
     </div>
     <div class="glass rounded-2xl p-4">
         <p class="text-gray-400 text-xs">Completed Trades</p>
-        <h3>3</h3>
+        <h3 id="statTrades">3</h3>
     </div>
 </div>
 
-<!-- ACTIVE INVESTMENT -->
 <div class="glass rounded-3xl p-5 mb-6">
     <div class="flex justify-between mb-3">
         <h3 class="font-bold">Active Investment</h3>
         <button class="text-cyan-400 text-sm">Claim Profit</button>
     </div>
-
     <p class="text-gray-400 text-sm">Plan: 7-Day Investment</p>
     <h2 class="text-2xl font-bold">$500.00 <span class="text-green-400">+ $75.00</span></h2>
     <p class="text-gray-400 text-sm">Time Left ↓ 4d 12h</p>
     <p class="text-green-400 text-sm">Status: RUNNING</p>
-
-    <iframe class="w-full h-40 mt-3 rounded-xl"
-    src="https://s.tradingview.com/widgetembed/?symbol=BTCUSD&theme=dark"></iframe>
+    <iframe class="w-full h-40 mt-3 rounded-xl" src="https://s.tradingview.com/widgetembed/?symbol=BTCUSD&theme=dark"></iframe>
 </div>
 
-<!-- TRANSACTIONS TABLE -->
 <div class="glass rounded-3xl p-5 mb-6">
     <h3 class="font-bold mb-3">Transaction History</h3>
-
     <table class="w-full text-sm">
         <thead class="text-gray-500 text-xs">
             <tr>
@@ -85,58 +72,55 @@ body { background:#000; font-family:'Plus Jakarta Sans',sans-serif; }
                 <th class="text-right">Status</th>
             </tr>
         </thead>
-        <tbody class="space-y-2">
-            <tr>
-                <td>Mar 19</td>
-                <td>Profit</td>
-                <td>$75</td>
-                <td class="text-green-400 text-right">Completed</td>
-            </tr>
-            <tr>
-                <td>Mar 19</td>
-                <td>Investment</td>
-                <td>-$500</td>
-                <td class="text-blue-400 text-right">Active</td>
-            </tr>
-            <tr>
-                <td>Mar 18</td>
-                <td>Deposit</td>
-                <td>$700</td>
-                <td class="text-green-400 text-right">Completed</td>
-            </tr>
+        <tbody id="txBody" class="space-y-2">
+            <tr><td>Mar 19</td><td>Profit</td><td>$75</td><td class="text-green-400 text-right">Completed</td></tr>
+            <tr><td>Mar 19</td><td>Investment</td><td>-$500</td><td class="text-blue-400 text-right">Active</td></tr>
+            <tr><td>Mar 18</td><td>Deposit</td><td>$700</td><td class="text-green-400 text-right">Completed</td></tr>
         </tbody>
     </table>
 </div>
 
-<!-- NOTIFICATIONS -->
-<div class="glass rounded-3xl p-5">
-    <h3 class="font-bold mb-3">Notifications</h3>
-
-    <div class="space-y-3 text-sm">
-        <div class="flex justify-between">
-            <span>Deposit completed for $700</span>
-            <span class="text-gray-500 text-xs">1 min ago</span>
-        </div>
-        <div class="flex justify-between">
-            <span>Investment plan started</span>
-            <span class="text-green-400 text-xs">+$5.00</span>
-        </div>
-        <div class="flex justify-between">
-            <span>Login from new device</span>
-            <span class="text-gray-500 text-xs">2 hrs ago</span>
-        </div>
-    </div>
-</div>
-
 <script>
+// INITIAL LOGIC FOR SIGNUP BONUS
+const isNewUser = localStorage.getItem("isNewUser");
+let targetBalance = 1275;
+
+if (isNewUser === "true") {
+    targetBalance = 100;
+    // Set Stats to zero for new user
+    document.getElementById("statProfit").innerText = "+$0.00";
+    document.getElementById("statActive").innerText = "$0.00";
+    document.getElementById("statTrades").innerText = "0";
+    
+    // Clear dummy history and add Bonus
+    const txBody = document.getElementById("txBody");
+    const date = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    txBody.innerHTML = `
+        <tr>
+            <td>${date}</td>
+            <td>Signup Bonus</td>
+            <td class="text-green-400">+$100.00</td>
+            <td class="text-green-400 text-right">Completed</td>
+        </tr>
+    `;
+}
+
 // Balance animation
-let b=0;
-let t=1275;
-let i=setInterval(()=>{
- b+=25;
- document.getElementById("balance").innerText="$"+b.toFixed(2);
- if(b>=t){clearInterval(i);document.getElementById("balance").innerText="$1275.00";}
-},30);
+let b = 0;
+let i = setInterval(() => {
+    b += (targetBalance / 50); // smooth increment
+    document.getElementById("balance").innerText = "$" + b.toFixed(2);
+    if (b >= targetBalance) {
+        clearInterval(i);
+        document.getElementById("balance").innerText = "$" + targetBalance.toFixed(2);
+    }
+}, 30);
+
+// LOGOUT FUNCTION
+function logout() {
+    localStorage.clear();
+    window.location.href = "index.html"; 
+}
 </script>
 
 </body>
