@@ -14,7 +14,7 @@
 <body class="p-6">
     <nav class="flex justify-between items-center mb-8">
         <h1 class="font-black text-xl">WILLCOIN<span class="text-cyan-400">CAPITAL</span></h1>
-        <button onclick="auth.signOut().then(() => { window.location.href='index.html'; })" class="text-xs text-gray-400">Logout</button>
+        <button onclick="logoutUser()" class="text-xs text-gray-400">Logout</button>
     </nav>
 
     <h1 id="greetingText" class="text-3xl font-bold mb-1">...</h1>
@@ -57,33 +57,59 @@
 
         auth.onAuthStateChanged(async (user) => {
             if (user) {
-                // Greeting Logic
-                const mode = localStorage.getItem("displayMode");
-                document.getElementById("greetingText").innerText = (mode === "new") ? "Hello Welcome" : "Welcome Back, Investor";
+                // Greeting Logic: Matches the key set in index.html
+                const mode = localStorage.getItem("willcoinAuthMode");
+                const greeting = document.getElementById("greetingText");
+                
+                if (mode === "signup") {
+                    greeting.innerText = "Hello Welcome";
+                } else {
+                    greeting.innerText = "Welcome Back, Investor";
+                }
 
-                // Live Balance Check
+                // Live Balance Check from Firestore
                 const userDoc = await db.collection("users").doc(user.uid).get();
                 if (userDoc.exists) {
                     const data = userDoc.data();
                     document.getElementById("balanceDisplay").innerText = "$" + data.balance.toFixed(2);
                     
-                    // History
-                    document.getElementById("txHistory").innerHTML = `<tr><td class="py-2">Signup</td><td>Bonus</td><td class="text-green-400">+$100.00</td></tr>`;
+                    // Permanent History Row for the $100 bonus
+                    document.getElementById("txHistory").innerHTML = `
+                        <tr class="border-b border-white/5">
+                            <td class="py-3 text-gray-400">Mar 2026</td>
+                            <td class="font-semibold text-white">Signup Bonus</td>
+                            <td class="text-right text-cyan-400">+$100.00</td>
+                        </tr>
+                    `;
                 }
             } else {
+                // Redirect to login if no active user
                 window.location.href = "index.html";
             }
         });
 
         async function addDeposit() {
-            const amt = prompt("Amount to deposit:");
-            if (amt && !isNaN(amt)) {
+            const amt = prompt("Enter Deposit Amount ($):");
+            if (amt && !isNaN(amt) && parseFloat(amt) > 0) {
                 const user = auth.currentUser;
-                await db.collection("users").doc(user.uid).update({
-                    balance: firebase.firestore.FieldValue.increment(parseFloat(amt))
-                });
-                location.reload();
+                try {
+                    await db.collection("users").doc(user.uid).update({
+                        balance: firebase.firestore.FieldValue.increment(parseFloat(amt))
+                    });
+                    // Refresh UI to show new balance
+                    location.reload();
+                } catch (err) {
+                    alert("Deposit failed. Please try again.");
+                }
             }
+        }
+
+        function logoutUser() {
+            // Clear the greeting mode so it resets for the next user
+            localStorage.removeItem("willcoinAuthMode");
+            auth.signOut().then(() => {
+                window.location.href = 'index.html';
+            });
         }
     </script>
 </body>
