@@ -9,6 +9,7 @@
     <style>
         body { background:#000; font-family:'Plus Jakarta Sans',sans-serif; color: white; margin: 0; }
         .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); border:1px solid rgba(255,255,255,0.08);}
+        /* Glowing effect for the Active Investment card */
         .active-gradient { background: linear-gradient(135deg, rgba(34,211,238,0.1) 0%, rgba(0,0,0,0) 100%); border: 1px solid rgba(34,211,238,0.3); }
         input[type=range]::-webkit-slider-runnable-track { background: rgba(255,255,255,0.1); border-radius: 10px; height: 6px; }
         input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
@@ -113,12 +114,13 @@
         const auth = firebase.auth();
         const db = firebase.firestore();
 
+        // 1. SESSION MANAGEMENT & DATA SYNC
         auth.onAuthStateChanged(async (user) => {
             if (user) {
                 const mode = localStorage.getItem("willcoinAuthMode");
                 document.getElementById("greetingText").innerText = (mode === "signup") ? "Hello Welcome" : "Welcome Back, Investor";
                 
-                // Real-time listener for balance AND active investment
+                // Real-time listener for balance and active power
                 db.collection("users").doc(user.uid).onSnapshot((doc) => {
                     if (doc.exists) {
                         const data = doc.data();
@@ -127,7 +129,7 @@
                         const balance = data.balance || 0;
                         document.getElementById("balanceDisplay").innerText = "$" + balance.toLocaleString(undefined, {minimumFractionDigits: 2});
 
-                        // Show/Hide Active Investment Card
+                        // Show/Hide Active Investment Card automatically
                         if (data.activeInvestment && data.activeInvestment > 0) {
                             document.getElementById("activeInvestmentCard").classList.remove("hidden");
                             document.getElementById("activePowerDisplay").innerText = "$" + data.activeInvestment.toLocaleString(undefined, {minimumFractionDigits: 2});
@@ -139,6 +141,7 @@
             } else { window.location.href = "index.html"; }
         });
 
+        // 2. INVESTMENT SLIDER LOGIC ($500 - $20,000)
         function updateInvestment(val) {
             let amount = parseFloat(val) || 0;
             if (amount > 20000) amount = 20000;
@@ -151,28 +154,29 @@
             document.getElementById('totalInvestment').innerText = "$" + totalWithBonus.toLocaleString(undefined, {minimumFractionDigits: 2});
         }
 
+        // 3. START 7-DAY CYCLE LOGIC
         async function processInvestment() {
             const amount = parseFloat(document.getElementById('manualInvest').value) || 0;
             if (amount < 500) return alert("Minimum investment is $500.00");
             
             const total = amount + 100;
             const user = auth.currentUser;
-            const userDoc = await db.collection("users").doc(user.uid).get();
+            const userDocRef = db.collection("users").doc(user.uid);
+            const userDoc = await userDocRef.get();
 
             if (userDoc.data().balance < amount) return alert("Insufficient balance.");
 
             try {
-                // Update database: subtract balance, set active investment
-                await db.collection("users").doc(user.uid).update({
+                await userDocRef.update({
                     balance: firebase.firestore.FieldValue.increment(-amount),
                     activeInvestment: total,
                     lastInvestDate: new Date().toISOString()
                 });
-                
-                alert(`Success! Your $${total.toLocaleString()} investment is now active.`);
+                alert(`Investment Started! Your $${total.toLocaleString()} total power is now live.`);
             } catch (err) { alert(err.message); }
         }
 
+        // 4. DEPOSIT & LOGOUT
         async function addDeposit() {
             const amt = prompt("Amount to deposit ($):");
             if (amt && !isNaN(amt)) {
