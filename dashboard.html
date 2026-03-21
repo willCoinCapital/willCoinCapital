@@ -7,33 +7,91 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        body { background:#000; font-family:'Plus Jakarta Sans',sans-serif; color: white; }
+        body { background:#000; font-family:'Plus Jakarta Sans',sans-serif; color: white; margin: 0; }
         .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); border:1px solid rgba(255,255,255,0.08);}
+        .active-gradient { background: linear-gradient(135deg, rgba(34,211,238,0.1) 0%, rgba(0,0,0,0) 100%); border: 1px solid rgba(34,211,238,0.3); }
+        input[type=range]::-webkit-slider-runnable-track { background: rgba(255,255,255,0.1); border-radius: 10px; height: 6px; }
+        input[type=number]::-webkit-inner-spin-button, input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
-<body class="p-6">
+<body class="p-6 pb-20">
     <nav class="flex justify-between items-center mb-8">
-        <h1 class="font-black text-xl">WILLCOIN<span class="text-cyan-400">CAPITAL</span></h1>
-        <button onclick="logoutUser()" class="text-xs text-gray-400">Logout</button>
+        <h1 class="font-black text-xl tracking-tighter text-white">WILLCOIN<span class="text-cyan-400">CAPITAL</span></h1>
+        <button onclick="logoutUser()" class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">Logout</button>
     </nav>
 
-    <h1 id="greetingText" class="text-3xl font-bold mb-1">...</h1>
-    <p class="text-gray-500 text-xs mb-6">Here is your portfolio overview with the latest market data.</p>
+    <div id="activeInvestmentCard" class="hidden active-gradient rounded-[32px] p-7 mb-4 relative overflow-hidden">
+        <div class="absolute top-0 right-0 p-4">
+            <span class="flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+            </span>
+        </div>
+        <p class="text-cyan-400 text-[10px] font-black uppercase tracking-widest mb-1">Active Cycle (7 Days)</p>
+        <h2 id="activePowerDisplay" class="text-4xl font-extrabold tracking-tighter text-white">$0.00</h2>
+        <p class="text-gray-500 text-[10px] mt-2 font-bold uppercase tracking-widest">Total Power Working</p>
+    </div>
 
-    <div class="glass rounded-3xl p-6 mb-6">
-        <p class="text-gray-400 text-xs">TOTAL BALANCE</p>
-        <h2 id="balanceDisplay" class="text-4xl font-bold mt-2">$0.00</h2>
-        <div class="flex gap-2 mt-4">
-            <button onclick="addDeposit()" class="flex-1 bg-cyan-400 text-black py-2 rounded-xl font-bold">Deposit</button>
-            <button class="flex-1 bg-gray-800 py-2 rounded-xl">Withdraw</button>
+    <div class="mb-8">
+        <h1 id="greetingText" class="text-3xl font-black tracking-tighter mb-1">...</h1>
+        <p class="text-gray-500 text-[11px] font-medium uppercase tracking-wider">Portfolio Overview • Mar 2026</p>
+    </div>
+
+    <div class="glass rounded-[32px] p-7 mb-4">
+        <p class="text-gray-400 text-[10px] font-black uppercase tracking-widest mb-1">Available Balance</p>
+        <h2 id="balanceDisplay" class="text-5xl font-extrabold tracking-tighter text-white">$0.00</h2>
+        <div class="flex gap-3 mt-6">
+            <button onclick="addDeposit()" class="flex-1 bg-cyan-400 text-black py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest active:scale-95 transition-all">Deposit</button>
+            <button class="flex-1 bg-white/5 border border-white/10 py-4 rounded-2xl font-black text-[11px] uppercase tracking-widest active:scale-95 transition-all">Withdraw</button>
         </div>
     </div>
 
-    <div class="glass rounded-3xl p-5">
-        <h3 class="font-bold mb-3">Transaction History</h3>
-        <table class="w-full text-sm">
-            <tbody id="txHistory" class="space-y-2"></tbody>
-        </table>
+    <div class="glass rounded-[32px] p-7 mb-4">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-white font-black text-lg uppercase tracking-tighter">Invest</h3>
+            <span class="bg-cyan-400/10 text-cyan-400 text-[9px] px-3 py-1.5 rounded-full font-black uppercase tracking-widest border border-cyan-400/20">+ $100 Bonus Applied</span>
+        </div>
+        
+        <div class="space-y-5">
+            <div class="space-y-3">
+                <div class="flex justify-between text-[10px] text-gray-500 font-black uppercase tracking-widest">
+                    <span>Contribution Amount</span>
+                    <span id="sliderValue" class="text-white">$500</span>
+                </div>
+                <input type="range" id="investSlider" min="500" max="20000" step="500" value="500" 
+                    class="w-full h-1.5 bg-white/10 rounded-lg appearance-none cursor-pointer accent-cyan-400"
+                    oninput="updateInvestment(this.value)">
+            </div>
+
+            <div class="relative">
+                <span class="absolute left-5 top-1/2 -translate-y-1/2 text-gray-500 font-bold text-sm">$</span>
+                <input type="number" id="manualInvest" placeholder="500.00" value="500"
+                    class="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-9 pr-5 text-sm font-bold outline-none focus:border-cyan-500/50 text-white"
+                    oninput="updateInvestment(this.value)">
+            </div>
+
+            <div class="bg-cyan-400/5 rounded-2xl p-4 flex justify-between items-center border border-cyan-400/10">
+                <span class="text-gray-400 text-[10px] uppercase font-black tracking-widest">Total Power:</span>
+                <span id="totalInvestment" class="text-cyan-400 font-black text-lg tracking-tighter">$600.00</span>
+            </div>
+
+            <button onclick="processInvestment()" class="w-full py-5 bg-white text-black rounded-[20px] font-black uppercase text-[11px] tracking-widest active:scale-95 transition-all shadow-lg shadow-white/5">
+                Start 7-Day Cycle
+            </button>
+        </div>
+    </div>
+
+    <div class="glass rounded-[32px] p-7">
+        <h3 class="text-white font-black text-lg uppercase tracking-tighter mb-5">History</h3>
+        <div class="space-y-4" id="txHistory">
+            <div class="flex justify-between items-center pb-4 border-b border-white/5">
+                <div>
+                    <p class="text-white font-bold text-sm">Signup Bonus</p>
+                    <p class="text-gray-500 text-[10px] uppercase font-bold">Mar 2026</p>
+                </div>
+                <p class="text-cyan-400 font-black text-sm">+$100.00</p>
+            </div>
+        </div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -57,59 +115,76 @@
 
         auth.onAuthStateChanged(async (user) => {
             if (user) {
-                // Greeting Logic: Matches the key set in index.html
                 const mode = localStorage.getItem("willcoinAuthMode");
-                const greeting = document.getElementById("greetingText");
+                document.getElementById("greetingText").innerText = (mode === "signup") ? "Hello Welcome" : "Welcome Back, Investor";
                 
-                if (mode === "signup") {
-                    greeting.innerText = "Hello Welcome";
-                } else {
-                    greeting.innerText = "Welcome Back, Investor";
-                }
+                // Real-time listener for balance AND active investment
+                db.collection("users").doc(user.uid).onSnapshot((doc) => {
+                    if (doc.exists) {
+                        const data = doc.data();
+                        
+                        // Update Main Balance
+                        const balance = data.balance || 0;
+                        document.getElementById("balanceDisplay").innerText = "$" + balance.toLocaleString(undefined, {minimumFractionDigits: 2});
 
-                // Live Balance Check from Firestore
-                const userDoc = await db.collection("users").doc(user.uid).get();
-                if (userDoc.exists) {
-                    const data = userDoc.data();
-                    document.getElementById("balanceDisplay").innerText = "$" + data.balance.toFixed(2);
-                    
-                    // Permanent History Row for the $100 bonus
-                    document.getElementById("txHistory").innerHTML = `
-                        <tr class="border-b border-white/5">
-                            <td class="py-3 text-gray-400">Mar 2026</td>
-                            <td class="font-semibold text-white">Signup Bonus</td>
-                            <td class="text-right text-cyan-400">+$100.00</td>
-                        </tr>
-                    `;
-                }
-            } else {
-                // Redirect to login if no active user
-                window.location.href = "index.html";
-            }
+                        // Show/Hide Active Investment Card
+                        if (data.activeInvestment && data.activeInvestment > 0) {
+                            document.getElementById("activeInvestmentCard").classList.remove("hidden");
+                            document.getElementById("activePowerDisplay").innerText = "$" + data.activeInvestment.toLocaleString(undefined, {minimumFractionDigits: 2});
+                        } else {
+                            document.getElementById("activeInvestmentCard").classList.add("hidden");
+                        }
+                    }
+                });
+            } else { window.location.href = "index.html"; }
         });
 
+        function updateInvestment(val) {
+            let amount = parseFloat(val) || 0;
+            if (amount > 20000) amount = 20000;
+            
+            document.getElementById('investSlider').value = amount;
+            document.getElementById('manualInvest').value = amount > 0 ? amount : '';
+            document.getElementById('sliderValue').innerText = "$" + amount.toLocaleString();
+
+            const totalWithBonus = amount + 100;
+            document.getElementById('totalInvestment').innerText = "$" + totalWithBonus.toLocaleString(undefined, {minimumFractionDigits: 2});
+        }
+
+        async function processInvestment() {
+            const amount = parseFloat(document.getElementById('manualInvest').value) || 0;
+            if (amount < 500) return alert("Minimum investment is $500.00");
+            
+            const total = amount + 100;
+            const user = auth.currentUser;
+            const userDoc = await db.collection("users").doc(user.uid).get();
+
+            if (userDoc.data().balance < amount) return alert("Insufficient balance.");
+
+            try {
+                // Update database: subtract balance, set active investment
+                await db.collection("users").doc(user.uid).update({
+                    balance: firebase.firestore.FieldValue.increment(-amount),
+                    activeInvestment: total,
+                    lastInvestDate: new Date().toISOString()
+                });
+                
+                alert(`Success! Your $${total.toLocaleString()} investment is now active.`);
+            } catch (err) { alert(err.message); }
+        }
+
         async function addDeposit() {
-            const amt = prompt("Enter Deposit Amount ($):");
-            if (amt && !isNaN(amt) && parseFloat(amt) > 0) {
-                const user = auth.currentUser;
-                try {
-                    await db.collection("users").doc(user.uid).update({
-                        balance: firebase.firestore.FieldValue.increment(parseFloat(amt))
-                    });
-                    // Refresh UI to show new balance
-                    location.reload();
-                } catch (err) {
-                    alert("Deposit failed. Please try again.");
-                }
+            const amt = prompt("Amount to deposit ($):");
+            if (amt && !isNaN(amt)) {
+                await db.collection("users").doc(auth.currentUser.uid).update({
+                    balance: firebase.firestore.FieldValue.increment(parseFloat(amt))
+                });
             }
         }
 
         function logoutUser() {
-            // Clear the greeting mode so it resets for the next user
             localStorage.removeItem("willcoinAuthMode");
-            auth.signOut().then(() => {
-                window.location.href = 'index.html';
-            });
+            auth.signOut().then(() => { window.location.href = 'index.html'; });
         }
     </script>
 </body>
