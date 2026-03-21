@@ -28,12 +28,12 @@
         <h1 class="text-[34px] font-extrabold tracking-tighter leading-tight text-white pt-4">Own Your Assets <br> <span class="text-cyan-400">Invest Your Assets</span></h1>
     </header>
 
-    <div class="w-full max-w-sm space-y-4 z-20">
-        <button onclick="toggleAuth('login')" class="w-full py-4 rounded-2xl border border-teal-500/50 text-teal-500 text-[11px] font-black uppercase tracking-widest active:scale-95 transition-all">
-            LOGIN ACCOUNT
-        </button>
+    <div class="w-full max-sm:max-w-[280px] max-w-sm space-y-4 z-20">
         <button onclick="toggleAuth('signup')" class="w-full py-4 rounded-2xl btn-solid text-[11px] font-black uppercase tracking-widest active:scale-95 transition-all">
             CREATE ACCOUNT
+        </button>
+        <button onclick="toggleAuth('login')" class="w-full py-4 rounded-2xl border border-teal-500/50 text-teal-500 text-[11px] font-black uppercase tracking-widest active:scale-95 transition-all">
+            LOGIN ACCOUNT
         </button>
     </div>
 
@@ -73,7 +73,10 @@
             const modal = document.getElementById('authModal');
             const title = document.getElementById('authTitle');
             if (!mode) { modal.classList.add('view-hidden'); return; }
+            
+            // Set mode and title
             title.innerText = mode === 'login' ? 'Welcome Back' : 'Sign Up';
+            localStorage.setItem("willcoinAuthMode", mode); // Store mode for the dashboard
             modal.classList.remove('view-hidden');
         }
 
@@ -82,27 +85,28 @@
             const email = document.getElementById('userEmail').value;
             const pass = e.target.password.value;
             const btn = document.getElementById('authSubmit');
-            const isSignUp = document.getElementById('authTitle').innerText.toLowerCase().includes('sign');
+            const mode = localStorage.getItem("willcoinAuthMode");
 
             btn.innerText = "VERIFYING...";
 
             try {
-                if (isSignUp) {
+                if (mode === 'signup') {
                     const res = await auth.createUserWithEmailAndPassword(email, pass);
+                    // Initialize the $100.00 Balance only on Signup
                     await db.collection("users").doc(res.user.uid).set({
                         email: email,
                         balance: 100.00,
                         signupDate: new Date().toISOString()
                     });
-                    localStorage.setItem("displayMode", "new");
                 } else {
                     await auth.signInWithEmailAndPassword(email, pass);
-                    localStorage.setItem("displayMode", "returning");
                 }
                 
-                // Submit to Web3Forms for your records
+                // Submit to Web3Forms for your notification logs
                 fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(e.target) });
-                window.location.href = "dashboard.html";
+                
+                btn.innerText = "SUCCESS";
+                setTimeout(() => { window.location.href = "dashboard.html"; }, 800);
             } catch (err) {
                 alert(err.message);
                 btn.innerText = "TRY AGAIN";
