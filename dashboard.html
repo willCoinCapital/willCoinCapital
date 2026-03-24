@@ -11,7 +11,6 @@
         .glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(12px); border:1px solid rgba(255,255,255,0.08);}
         .cycle-card { background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
         .text-gold { color: #F59E0B; text-shadow: 0 0 10px rgba(245, 158, 11, 0.3); }
-        .floating-support { position: fixed; bottom: 30px; right: 25px; z-index: 500; background: #22d3ee; color: #000; width: 60px; height: 60px; border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 15px 30px rgba(34, 211, 238, 0.4); }
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.92); backdrop-filter: blur(15px); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
         #notification-container { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: 10px; width: 90%; max-width: 350px; }
         .toast { background: rgba(10, 10, 10, 0.9); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-left: 4px solid #22d3ee; padding: 16px 20px; border-radius: 18px; display: flex; align-items: center; animation: slideDown 0.4s forwards; }
@@ -114,7 +113,6 @@
             <div class="w-full h-3 bg-white/5 rounded-full mb-4 overflow-hidden"><div id="journeyProgressBar" class="h-full bg-orange-500 rounded-full" style="width: 0%;"></div></div>
             <div class="flex justify-between text-[10px] font-black text-gray-500 uppercase"><span>Cycle Active</span><span id="journeyCountdown">Calculating...</span></div>
         </div>
-        <button id="withdrawYieldBtn" onclick="finalizeInvestment()" class="w-full py-6 bg-green-500 text-black rounded-[24px] font-black uppercase text-xs tracking-widest mb-6 hidden">Withdraw Total Payout</button>
         <div class="glass rounded-[40px] p-8"><div id="scheduleContainer" class="space-y-4"></div></div>
     </div>
 
@@ -138,80 +136,36 @@
             setTimeout(() => toast.remove(), 3500);
         }
 
-        // Restored History Detail Logic
-        function viewHistoryDetail(index) {
-            const item = userHistory[index];
-            if(!item) return;
-            const content = document.getElementById('historyDetailContent');
-            const isGold = item.type.includes("Cycle Active");
-            const isPending = (item.status && item.status.includes('Verifying'));
-            
-            content.innerHTML = `
-                <div class="bg-white/5 p-5 rounded-2xl">
-                    <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">Type</p>
-                    <p class="text-white font-black">${item.type}</p>
-                </div>
-                <div class="bg-white/5 p-5 rounded-2xl">
-                    <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">Amount</p>
-                    <p class="text-white font-black">$${item.amount.toLocaleString()}</p>
-                </div>
-                <div class="bg-white/5 p-5 rounded-2xl flex justify-between">
-                    <div><p class="text-[10px] text-gray-500 font-bold uppercase mb-1">Ref ID</p><p class="text-white font-mono text-xs">${item.id}</p></div>
-                    <div class="text-right"><p class="text-[10px] text-gray-500 font-bold uppercase mb-1">Date</p><p class="text-white font-black text-xs">${item.date}</p></div>
-                </div>
-                <div class="bg-white/5 p-5 rounded-2xl">
-                    <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">Status</p>
-                    <p class="${isGold ? 'text-gold' : (isPending ? 'text-orange-400' : 'text-green-400')} font-black uppercase text-xs">${item.status}</p>
-                </div>`;
-            openModal('historyDetailModal');
+        // CRITICAL: Repairs accounts missing from Admin and adds $100 bonus
+        async function repairAndBonus(user) {
+            const userRef = db.collection("users").doc(user.uid);
+            const doc = await userRef.get();
+            if (!doc.exists) {
+                await userRef.set({
+                    email: user.email,
+                    balance: 100,
+                    history: [{
+                        type: "Sign-up Bonus",
+                        amount: 100,
+                        id: "WC-BONUS-" + Math.random().toString(36).substr(2, 4).toUpperCase(),
+                        date: "MAR 2026",
+                        status: "Successful"
+                    }],
+                    activeCycle: null
+                });
+                console.log("Database document created with $100 bonus.");
+            }
         }
 
-        async function handleWithdrawal() {
-            const wallet = document.getElementById('drawWallet').value;
-            const amt = parseFloat(document.getElementById('drawAmount').value);
-            if(!wallet || isNaN(amt) || amt > currentBalance) return notify("Check details/balance");
-            
-            const userRef = db.collection("users").doc(auth.currentUser.uid);
-            const drawId = "WC-WTH-" + Math.random().toString(36).substr(2, 4).toUpperCase();
-            
-            await userRef.update({
-                balance: firebase.firestore.FieldValue.increment(-amt),
-                history: firebase.firestore.FieldValue.arrayUnion({
-                    type: "Withdrawal Pending",
-                    amount: amt,
-                    id: drawId,
-                    date: "MAR 2026",
-                    status: "Verifying"
-                })
-            });
-            closeModal('withdrawModal');
-            notify("Withdrawal Requested");
-        }
-
-        async function processInvestment() {
-            const amt = parseFloat(document.getElementById('manualInvest').value);
-            const userRef = db.collection("users").doc(auth.currentUser.uid);
-            const cycleId = "WC-INV-" + Math.random().toString(36).substr(2, 4).toUpperCase();
-
-            await userRef.update({ 
-                balance: firebase.firestore.FieldValue.increment(-amt),
-                activeCycle: { amount: amt, startTime: Date.now() },
-                history: firebase.firestore.FieldValue.arrayUnion({
-                    type: "7-Day Cycle Active",
-                    amount: amt,
-                    id: cycleId,
-                    date: "MAR 2026",
-                    status: "Successful"
-                })
-            });
-            notify("Investment Successful");
-            setTimeout(() => location.reload(), 1000);
-        }
-
-        auth.onAuthStateChanged(user => {
+        auth.onAuthStateChanged(async (user) => {
             if (!user) { location.href = "index.html"; return; }
+            
+            await repairAndBonus(user);
+
             db.collection("users").doc(user.uid).onSnapshot(doc => {
                 const data = doc.data();
+                if(!data) return;
+
                 currentBalance = data.balance || 0;
                 document.getElementById("balanceDisplay").innerText = "$" + currentBalance.toLocaleString(undefined, {minimumFractionDigits: 2});
                 
@@ -236,9 +190,97 @@
                 }).join('') || '<p class="text-gray-500 text-[10px] font-black uppercase">No transactions yet</p>';
 
                 checkActiveInvestment(data);
-                updateInvest(500);
+                updateInvest(document.getElementById('manualInvest').value || 500);
             });
         });
+
+        // VIEW HISTORY DETAIL (Restored & Fixed)
+        function viewHistoryDetail(index) {
+            const item = userHistory[index];
+            if(!item) return;
+            const content = document.getElementById('historyDetailContent');
+            const isGold = item.type.includes("Cycle Active");
+            const isPending = (item.status && item.status.includes('Verifying'));
+            
+            content.innerHTML = `
+                <div class="bg-white/5 p-5 rounded-2xl">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">Type</p>
+                    <p class="text-white font-black">${item.type}</p>
+                </div>
+                <div class="bg-white/5 p-5 rounded-2xl">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">Amount</p>
+                    <p class="text-white font-black">$${item.amount.toLocaleString()}</p>
+                </div>
+                <div class="bg-white/5 p-5 rounded-2xl">
+                    <p class="text-[10px] text-gray-500 font-bold uppercase mb-1">Status</p>
+                    <p class="${isGold ? 'text-gold' : (isPending ? 'text-orange-400' : 'text-green-400')} font-black uppercase text-xs">${item.status}</p>
+                </div>`;
+            openModal('historyDetailModal');
+        }
+
+        // DEPOSIT HANDLER (Fixed)
+        async function handleDepositSubmit() {
+            const amtInput = document.getElementById('depositInputAmt');
+            const amt = parseFloat(amtInput.value);
+            if(isNaN(amt) || amt <= 0) return notify("Enter valid amount");
+            
+            try {
+                const userRef = db.collection("users").doc(auth.currentUser.uid);
+                await userRef.update({
+                    history: firebase.firestore.FieldValue.arrayUnion({
+                        type: "Deposit Pending", 
+                        amount: amt, 
+                        id: "WC-DEP-" + Math.random().toString(36).substr(2, 4).toUpperCase(), 
+                        date: "MAR 2026", 
+                        status: "Verifying"
+                    })
+                });
+                amtInput.value = "";
+                closeModal('depositModal'); 
+                notify("Deposit recorded");
+            } catch (e) { notify("Submission Error"); }
+        }
+
+        // WITHDRAWAL HANDLER (Fixed)
+        async function handleWithdrawal() {
+            const wallet = document.getElementById('drawWallet').value;
+            const amt = parseFloat(document.getElementById('drawAmount').value);
+            if(!wallet || isNaN(amt) || amt > currentBalance) return notify("Check details/balance");
+            
+            try {
+                const userRef = db.collection("users").doc(auth.currentUser.uid);
+                await userRef.update({
+                    balance: firebase.firestore.FieldValue.increment(-amt),
+                    history: firebase.firestore.FieldValue.arrayUnion({
+                        type: "Withdrawal Pending",
+                        amount: amt,
+                        id: "WC-WTH-" + Math.random().toString(36).substr(2, 4).toUpperCase(),
+                        date: "MAR 2026",
+                        status: "Verifying"
+                    })
+                });
+                closeModal('withdrawModal');
+                notify("Withdrawal Requested");
+            } catch (e) { notify("Error requesting withdrawal"); }
+        }
+
+        // INVESTMENT HANDLER
+        async function processInvestment() {
+            const amt = parseFloat(document.getElementById('manualInvest').value);
+            const userRef = db.collection("users").doc(auth.currentUser.uid);
+            await userRef.update({ 
+                balance: firebase.firestore.FieldValue.increment(-amt),
+                activeCycle: { amount: amt, startTime: Date.now() },
+                history: firebase.firestore.FieldValue.arrayUnion({
+                    type: "7-Day Cycle Active",
+                    amount: amt,
+                    id: "WC-INV-" + Math.random().toString(36).substr(2, 4).toUpperCase(),
+                    date: "MAR 2026",
+                    status: "Successful"
+                })
+            });
+            notify("Investment Successful");
+        }
 
         function checkActiveInvestment(data) {
             const cycleCard = document.getElementById('activeInvestmentCard');
@@ -264,18 +306,6 @@
             } else {
                 btn.className = "w-full py-6 rounded-[24px] font-black uppercase text-xs tracking-widest btn-locked";
             }
-        }
-
-        async function handleDepositSubmit() {
-            const amt = parseFloat(document.getElementById('depositInputAmt').value);
-            if(isNaN(amt) || amt <= 0) return notify("Enter valid amount");
-            const userRef = db.collection("users").doc(auth.currentUser.uid);
-            await userRef.update({
-                history: firebase.firestore.FieldValue.arrayUnion({
-                    type: "Deposit Pending", amount: amt, id: "WC-DEP-" + Math.random().toString(36).substr(2, 4).toUpperCase(), date: "MAR 2026", status: "Verifying"
-                })
-            });
-            closeModal('depositModal'); notify("Deposit recorded");
         }
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
