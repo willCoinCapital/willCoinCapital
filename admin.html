@@ -3,60 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>willCoin | MASTER ROOT</title>
+    <title>WILLCOIN | HQ</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700;800&display=swap" rel="stylesheet">
     <style>
-        body { background: #000; font-family: 'Plus Jakarta Sans', sans-serif; color: white; }
-        .glass { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); backdrop-filter: blur(20px); }
-        .neo-btn { background: #22d3ee; color: #000; font-weight: 900; }
+        body { background: #0b0b0b; font-family: 'Plus Jakarta Sans', sans-serif; color: white; }
+        .glass-card { background: #161616; border: 1px solid #222; border-radius: 24px; overflow: hidden; }
+        .accent-text { color: #22d3ee; }
+        .pending-badge { background: rgba(34, 211, 238, 0.1); color: #22d3ee; border: 1px solid rgba(34, 211, 238, 0.2); }
         .hidden { display: none !important; }
-        .tab-active { color: #22d3ee; border-bottom: 2px solid #22d3ee; }
     </style>
 </head>
-<body class="min-h-screen p-4 md:p-10">
+<body class="min-h-screen p-6 max-w-4xl mx-auto">
 
-    <div id="gate" class="flex items-center justify-center min-h-[80vh]">
-        <div class="glass p-10 rounded-[40px] w-full max-w-sm text-center">
-            <h1 class="text-[10px] font-black uppercase tracking-[0.5em] text-cyan-400 mb-8">System Entry</h1>
-            <input type="password" id="masterPin" placeholder="••••••" class="w-full bg-white/5 border border-white/10 rounded-2xl py-6 text-center text-3xl font-black outline-none focus:border-cyan-400 text-white mb-6 tracking-[0.5em]">
-            <button onclick="unlock()" class="w-full py-5 neo-btn rounded-2xl text-xs uppercase tracking-widest">Authorize</button>
+    <div id="gate" class="flex flex-col items-center justify-center min-h-[80vh]">
+        <div class="w-16 h-16 bg-cyan-400/10 rounded-2xl flex items-center justify-center mb-6 border border-cyan-400/20">
+            <svg class="w-8 h-8 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
         </div>
+        <h2 class="text-xs font-bold uppercase tracking-[0.3em] mb-8">Master Terminal</h2>
+        <input type="password" id="masterPin" placeholder="••••••" class="bg-[#161616] border border-white/10 rounded-xl py-4 px-6 text-center text-2xl tracking-[0.5em] focus:outline-none focus:border-cyan-400 mb-4 w-64">
+        <button onclick="unlock()" class="bg-white text-black font-extrabold py-4 px-12 rounded-xl text-xs uppercase tracking-widest hover:scale-105 transition">Authorize Access</button>
     </div>
 
-    <div id="terminal" class="hidden max-w-6xl mx-auto">
-        <header class="flex justify-between items-center mb-10">
-            <h1 class="text-4xl font-black tracking-tighter uppercase">willCoin <span class="opacity-20">Console</span></h1>
-            <button onclick="location.reload()" class="bg-red-500/20 text-red-500 px-6 py-2 rounded-full text-[9px] font-black uppercase">Lock</button>
+    <div id="terminal" class="hidden">
+        <header class="flex justify-between items-center mb-12">
+            <div>
+                <p class="text-[9px] font-bold uppercase tracking-widest accent-text mb-1">• Master Root Active</p>
+                <h1 class="text-3xl font-black tracking-tighter">WILLCOIN <span class="opacity-30">HQ</span></h1>
+            </div>
+            <button onclick="location.reload()" class="bg-[#1a1a1a] text-white/40 border border-white/5 px-5 py-2 rounded-full text-[9px] font-bold uppercase tracking-widest">Secure Logout</button>
         </header>
 
-        <div class="flex gap-8 mb-8 border-b border-white/10">
-            <button id="tabUsersBtn" onclick="switchTab('users')" class="pb-4 text-[10px] font-black uppercase tracking-widest tab-active">User Database</button>
-            <button id="tabDepositsBtn" onclick="switchTab('deposits')" class="pb-4 text-[10px] font-black uppercase tracking-widest text-white/40">Pending Deposits</button>
-        </div>
+        <section class="mb-12">
+            <h3 class="flex items-center text-[10px] font-black uppercase tracking-widest mb-6">
+                <span class="w-2 h-2 bg-cyan-400 rounded-full mr-3 animate-pulse"></span> Verification Queue
+            </h3>
+            <div class="glass-card">
+                <div class="grid grid-cols-3 p-4 border-b border-white/5 text-[9px] font-bold uppercase text-white/20 tracking-widest">
+                    <span>User Account</span>
+                    <span class="text-center">Details</span>
+                    <span class="text-right">Amount</span>
+                </div>
+                <div id="verificationList" class="divide-y divide-white/5">
+                    </div>
+            </div>
+        </section>
 
-        <div id="sectionUsers" class="glass rounded-[30px] overflow-hidden border border-white/5">
-            <table class="w-full text-left">
-                <thead class="bg-white/5 text-[9px] font-black uppercase text-white/30 p-8">
-                    <tr><th class="p-8">Account</th><th class="p-8">Balance</th><th class="p-8 text-right">Action</th></tr>
-                </thead>
-                <tbody id="userList" class="divide-y divide-white/5"></tbody>
-            </table>
-        </div>
-
-        <div id="sectionDeposits" class="hidden glass rounded-[30px] overflow-hidden border border-white/5">
-            <table class="w-full text-left">
-                <thead class="bg-white/5 text-[9px] font-black uppercase text-white/30">
-                    <tr><th class="p-8">User</th><th class="p-8">Amount</th><th class="p-8 text-right">Decision</th></tr>
-                </thead>
-                <tbody id="depositList" class="divide-y divide-white/5"></tbody>
-            </table>
-        </div>
-
-        <div class="mt-10 p-4 bg-white/5 rounded-xl border border-white/10">
-            <h3 class="text-[8px] font-black uppercase text-white/20 mb-2">System Debugger</h3>
-            <div id="debugLog" class="text-[10px] font-mono text-cyan-400/50 max-h-32 overflow-y-auto">Scanning for data...</div>
-        </div>
+        <section>
+            <h3 class="text-[10px] font-black uppercase tracking-widest mb-6">Global User Directory</h3>
+            <div class="glass-card">
+                <div class="grid grid-cols-3 p-4 border-b border-white/5 text-[9px] font-bold uppercase text-white/20 tracking-widest">
+                    <span>Account</span>
+                    <span class="text-center">Balance</span>
+                    <span class="text-right">Account Actions</span>
+                </div>
+                <div id="userDirectory" class="divide-y divide-white/5">
+                    </div>
+            </div>
+        </section>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -74,89 +78,93 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        function log(msg) { document.getElementById('debugLog').innerHTML += `<br>> ${msg}`; }
-
         function unlock() {
             if(document.getElementById('masterPin').value === "555888") {
                 document.getElementById('gate').classList.add('hidden');
                 document.getElementById('terminal').classList.remove('hidden');
-                loadData();
-            } else { alert("Invalid PIN"); }
+                loadHQ();
+            } else { alert("ACCESS DENIED"); }
         }
 
-        function switchTab(tab) {
-            document.getElementById('sectionUsers').classList.toggle('hidden', tab !== 'users');
-            document.getElementById('sectionDeposits').classList.toggle('hidden', tab !== 'deposits');
-            document.getElementById('tabUsersBtn').className = tab === 'users' ? 'pb-4 text-[10px] font-black uppercase tracking-widest tab-active' : 'pb-4 text-[10px] font-black uppercase tracking-widest text-white/40';
-            document.getElementById('tabDepositsBtn').className = tab === 'deposits' ? 'pb-4 text-[10px] font-black uppercase tracking-widest tab-active' : 'pb-4 text-[10px] font-black uppercase tracking-widest text-white/40';
-        }
-
-        function loadData() {
-            log("Attaching database listeners...");
+        function loadHQ() {
             db.collection('users').onSnapshot(snap => {
-                const userBody = document.getElementById('userList');
-                const depositBody = document.getElementById('depositList');
-                userBody.innerHTML = "";
-                depositBody.innerHTML = "";
-                let pendingCount = 0;
+                const vList = document.getElementById('verificationList');
+                const dList = document.getElementById('userDirectory');
+                vList.innerHTML = "";
+                dList.innerHTML = "";
 
                 snap.forEach(doc => {
                     const u = doc.data();
-                    
-                    userBody.innerHTML += `<tr>
-                        <td class="p-8 text-sm font-bold">${u.email}</td>
-                        <td class="p-8 font-black text-cyan-400 text-2xl">$${(u.balance || 0).toLocaleString()}</td>
-                        <td class="p-8 text-right"><button onclick="editBal('${doc.id}')" class="bg-white/5 border border-white/10 px-4 py-2 rounded-xl text-[9px] font-black uppercase">Edit</button></td>
-                    </tr>`;
+                    const uid = doc.id;
 
+                    // 1. ADD TO DIRECTORY
+                    dList.innerHTML += `
+                    <div class="grid grid-cols-3 p-6 items-center hover:bg-white/[0.02]">
+                        <div class="overflow-hidden">
+                            <p class="font-bold text-sm truncate">${u.email}</p>
+                            <p class="text-[8px] text-white/20 truncate mt-1">${uid}</p>
+                        </div>
+                        <div class="text-center">
+                            <p class="text-cyan-400 font-black text-xl">$${(u.balance || 0).toLocaleString()}</p>
+                        </div>
+                        <div class="flex justify-end gap-2">
+                            <button onclick="editBal('${uid}')" class="bg-white/5 text-[8px] font-black uppercase px-3 py-2 rounded-md border border-white/5">Edit Bal</button>
+                            <button onclick="deleteUser('${uid}')" class="bg-red-500/10 text-red-500 text-[8px] font-black uppercase px-3 py-2 rounded-md border border-red-500/10">Delete</button>
+                        </div>
+                    </div>`;
+
+                    // 2. SCAN HISTORY FOR PENDING VERIFICATION
                     if (u.history && Array.isArray(u.history)) {
                         u.history.forEach((item, index) => {
-                            // FLEXIBLE STATUS CHECK: Ignores spaces and capitalization
-                            const statusClean = (item.status || "").trim().toLowerCase();
-                            if (statusClean === "pending") {
-                                pendingCount++;
-                                depositBody.innerHTML += `<tr>
-                                    <td class="p-8 text-sm font-bold text-white/80">${u.email}</td>
-                                    <td class="p-8 font-black text-white text-2xl">$${(item.amount || 0).toLocaleString()}</td>
-                                    <td class="p-8 text-right space-x-3">
-                                        <button onclick="resolveDep('${doc.id}', ${index}, 'Successful')" class="bg-cyan-400 text-black px-6 py-2 rounded-xl text-[9px] font-black uppercase">Approve</button>
-                                        <button onclick="resolveDep('${doc.id}', ${index}, 'Failed')" class="bg-red-500/10 text-red-500 border border-red-500/20 px-6 py-2 rounded-xl text-[9px] font-black uppercase">Fail</button>
-                                    </td>
-                                </tr>`;
+                            if (item.status && item.status.toLowerCase().includes("pending")) {
+                                vList.innerHTML += `
+                                <div class="grid grid-cols-3 p-6 items-center hover:bg-white/[0.02]">
+                                    <div>
+                                        <p class="font-bold text-sm">${u.email}</p>
+                                        <p class="text-[8px] text-white/20 mt-1">${uid}</p>
+                                    </div>
+                                    <div class="flex flex-col items-center">
+                                        <p class="text-[8px] text-white/40 mb-2 uppercase tracking-tighter">${item.id || 'TRX-REF'}</p>
+                                        <button onclick="approveDeposit('${uid}', ${index})" class="pending-badge px-3 py-1 rounded text-[8px] font-bold uppercase tracking-tighter">Pending Verification</button>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-white font-black text-2xl">$${(item.amount || 0).toLocaleString()}</p>
+                                    </div>
+                                </div>`;
                             }
                         });
                     }
                 });
 
-                log(`Sync Complete. Users: ${snap.size} | Pending Found: ${pendingCount}`);
-                if (pendingCount === 0) {
-                    depositBody.innerHTML = `<tr><td colspan="3" class="p-20 text-center text-white/10 uppercase font-black text-[10px] tracking-[0.5em]">No Pending Transactions Found</td></tr>`;
-                }
-            }, err => log("FIREBASE ERROR: " + err.message));
+                if(vList.innerHTML === "") vList.innerHTML = `<p class="p-12 text-center text-white/10 text-[10px] uppercase font-bold tracking-widest">Queue Clear</p>`;
+            });
+        }
+
+        async function approveDeposit(uid, index) {
+            if(!confirm("Approve this deposit? Funds will be added to balance.")) return;
+            const ref = db.collection('users').doc(uid);
+            await db.runTransaction(async (t) => {
+                const snap = await t.get(ref);
+                let data = snap.data();
+                let history = data.history;
+                let amt = history[index].amount;
+                
+                history[index].status = "Successful";
+                t.update(ref, { 
+                    history: history, 
+                    balance: (data.balance || 0) + amt 
+                });
+            });
+            alert("Deposit Approved");
         }
 
         async function editBal(id) {
-            const val = prompt("New Balance:");
+            const val = prompt("Enter New Balance:");
             if(val) await db.collection('users').doc(id).update({ balance: parseFloat(val) });
         }
 
-        async function resolveDep(userId, historyIndex, newStatus) {
-            const userRef = db.collection('users').doc(userId);
-            try {
-                await db.runTransaction(async (transaction) => {
-                    const userDoc = await transaction.get(userRef);
-                    let history = userDoc.data().history;
-                    let currentBal = userDoc.data().balance || 0;
-                    let amount = history[historyIndex].amount;
-
-                    history[historyIndex].status = newStatus;
-                    let update = { history: history };
-                    if (newStatus === 'Successful') update.balance = currentBal + amount;
-
-                    transaction.update(userRef, update);
-                });
-                alert("Decision Processed: " + newStatus);
-            } catch(e) { alert("Error: " + e.message); }
+        async function deleteUser(id) {
+            if(confirm("Permanently delete this user?")) await db.collection('users').doc(id).delete();
         }
     </script>
 </body>
