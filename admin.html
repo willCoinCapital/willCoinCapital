@@ -85,40 +85,45 @@
         }
 
         function loadData() {
-            // LOAD USERS
             db.collection('users').onSnapshot(snap => {
-                const list = document.getElementById('userList');
-                list.innerHTML = "";
+                const userBody = document.getElementById('userList');
+                const depositBody = document.getElementById('depositList');
+                userBody.innerHTML = "";
+                depositBody.innerHTML = "";
+
                 snap.forEach(doc => {
                     const u = doc.data();
-                    list.innerHTML += `<tr>
+                    
+                    // Render User Row
+                    userBody.innerHTML += `<tr>
                         <td class="p-8 text-sm font-bold">${u.email}</td>
                         <td class="p-8 font-black text-cyan-400 text-2xl">$${(u.balance || 0).toLocaleString()}</td>
                         <td class="p-8 text-right">
                             <button onclick="editBal('${doc.id}')" class="bg-white/5 border border-white/10 px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest">Edit</button>
                         </td>
                     </tr>`;
-                });
-            });
 
-            // LOAD DEPOSITS (Collection name must be 'deposits')
-            db.collection('deposits').onSnapshot(snap => {
-                const list = document.getElementById('depositList');
-                list.innerHTML = "";
-                snap.forEach(doc => {
-                    const d = doc.data();
-                    if(d.status === 'pending') {
-                        list.innerHTML += `<tr>
-                            <td class="p-8 text-sm font-bold text-white/80">${d.userEmail || d.email}</td>
-                            <td class="p-8 font-black text-white text-2xl">$${d.amount.toLocaleString()}</td>
-                            <td class="p-8 text-right space-x-3">
-                                <button onclick="processDep('${doc.id}', '${d.userId}', ${d.amount}, 'approved')" class="bg-cyan-400 text-black px-6 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest">Approve</button>
-                                <button onclick="processDep('${doc.id}', null, null, 'failed')" class="bg-red-500/10 text-red-500 border border-red-500/20 px-6 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest">Decline</button>
-                            </td>
-                        </tr>`;
+                    // Scan History Array for Pending Deposits
+                    if (u.history && Array.isArray(u.history)) {
+                        u.history.forEach((item, index) => {
+                            if (item.status === "Pending") {
+                                depositBody.innerHTML += `<tr>
+                                    <td class="p-8 text-sm font-bold text-white/80">${u.email}</td>
+                                    <td class="p-8 font-black text-white text-2xl">$${(item.amount || 0).toLocaleString()}</td>
+                                    <td class="p-8 text-right space-x-3">
+                                        <button onclick="resolveDep('${doc.id}', ${index}, 'Successful')" class="bg-cyan-400 text-black px-6 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest">Approve</button>
+                                        <button onclick="resolveDep('${doc.id}', ${index}, 'Failed')" class="bg-red-500/10 text-red-500 border border-red-500/20 px-6 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest">Decline</button>
+                                    </td>
+                                </tr>`;
+                            }
+                        });
                     }
                 });
-            }, err => { alert("Database Error: Check your Firebase Rules!"); });
+
+                if (depositBody.innerHTML === "") {
+                    depositBody.innerHTML = `<tr><td colspan="3" class="p-20 text-center text-white/10 uppercase font-black text-[10px] tracking-[0.5em]">No Pending Transactions Found</td></tr>`;
+                }
+            });
         }
 
         async function editBal(id) {
@@ -126,21 +131,33 @@
             if(val) await db.collection('users').doc(id).update({ balance: parseFloat(val) });
         }
 
-        async function processDep(depId, userId, amount, status) {
-            if (status === 'approved') {
-                const userRef = db.collection('users').doc(userId);
-                try {
-                    await db.runTransaction(async (transaction) => {
-                        const sfDoc = await transaction.get(userRef);
-                        const newBalance = (sfDoc.data().balance || 0) + amount;
-                        transaction.update(userRef, { balance: newBalance });
-                        transaction.update(db.collection('deposits').doc(depId), { status: 'approved' });
+        async function resolveDep(userId, historyIndex, newStatus) {
+            const userRef = db.collection('users').doc(userId);
+            
+            try {
+                await db.runTransaction(async (transaction) => {
+                    const userDoc = await transaction.get(userRef);
+                    let history = userDoc.data().history;
+                    let currentBal = userDoc.data().balance || 0;
+                    let depositAmount = history[historyIndex].amount;
+
+                    // Update Status in Array
+                    history[historyIndex].status = newStatus;
+
+                    // If approved, add to balance
+                    if (newStatus === 'Successful') {
+                        currentBal += depositAmount;
+                    }
+
+                    transaction.update(userRef, { 
+                        history: history,
+                        balance: currentBal 
                     });
-                    alert("Deposit Approved!");
-                } catch(e) { alert("Error: Make sure the User exists in your 'users' collection."); }
-            } else {
-                await db.collection('deposits').doc(depId).update({ status: 'failed' });
-                alert("Deposit Declined.");
+                });
+                alert("Transaction " + newStatus);
+            } catch(e) { 
+                console.error(e);
+                alert("Update failed: " + e.message); 
             }
         }
     </script>
