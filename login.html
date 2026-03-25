@@ -6,57 +6,81 @@
 <title>willCoin Capital Login</title>
 <style>
     body {
-        background: #000; /* Deep black for better contrast */
-        font-family: 'Arial', sans-serif;
+        background: #000;
+        font-family: 'Plus Jakarta Sans', Arial, sans-serif;
         color: white;
-        display: flex;
-        flex-direction: column; /* Stack timeline above login box */
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
         margin: 0;
-        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start; /* Changed from center to allow scrolling */
+        min-height: 100vh;
+        overflow-y: auto; /* Ensures you can scroll if the content is long */
+    }
+
+    .main-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 20px;
+        width: 100%;
+        max-width: 360px;
+    }
+
+    /* BRAND HEADER */
+    .brand-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+    
+    .brand-header h1 {
+        font-size: 24px;
+        font-weight: 900;
+        margin: 0;
+        letter-spacing: -1px;
+        text-transform: uppercase;
+    }
+
+    .brand-header h1 span { color: #19d3ff; }
+    .brand-header p {
+        font-size: 10px;
+        color: #6b7280;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-top: 5px;
     }
 
     /* HOW IT WORKS SECTION */
     .how-it-works {
         width: 100%;
-        max-width: 340px;
-        margin-bottom: 30px;
         display: flex;
         flex-direction: column;
         gap: 12px;
-        animation: fadeIn 1s ease-out;
+        margin-bottom: 40px;
+        animation: fadeInUp 0.8s ease-out;
     }
 
     .step-card {
         background: rgba(255, 255, 255, 0.03);
-        backdrop-filter: blur(10px);
-        border: 1px solid rgba(25, 211, 255, 0.1);
-        border-radius: 16px;
-        padding: 15px;
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        padding: 18px;
         display: flex;
         align-items: center;
         gap: 15px;
-        transition: transform 0.3s ease;
-    }
-
-    .step-card:hover {
-        border-color: #19d3ff;
-        transform: translateY(-2px);
     }
 
     .icon-box {
-        width: 40px;
-        height: 40px;
+        width: 44px;
+        height: 44px;
         background: rgba(25, 211, 255, 0.1);
-        border-radius: 10px;
+        border: 1px solid rgba(25, 211, 255, 0.2);
+        border-radius: 12px;
         display: flex;
         justify-content: center;
         align-items: center;
         color: #19d3ff;
-        font-weight: bold;
-        font-size: 18px;
+        font-size: 20px;
     }
 
     .step-text h4 {
@@ -68,95 +92,56 @@
     }
 
     .step-text p {
-        margin: 2px 0 0 0;
+        margin: 4px 0 0 0;
         font-size: 12px;
         color: #9ca3af;
-    }
-
-    /* ANIMATIONS */
-    @keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    .pulse {
-        animation: pulse-glow 2s infinite;
-    }
-
-    @keyframes pulse-glow {
-        0% { box-shadow: 0 0 0 0 rgba(25, 211, 255, 0.4); }
-        70% { box-shadow: 0 0 0 10px rgba(25, 211, 255, 0); }
-        100% { box-shadow: 0 0 0 0 rgba(25, 211, 255, 0); }
+        line-height: 1.4;
     }
 
     /* LOGIN BOX */
     .login-box {
         background: #111827;
-        padding: 40px;
-        border-radius: 24px; /* Matches the sleek dashboard look */
-        width: 300px;
+        padding: 35px;
+        border-radius: 32px;
+        width: 100%;
+        box-sizing: border-box;
         text-align: center;
         position: relative;
         box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
         border: 1px solid rgba(255,255,255,0.05);
     }
 
-    .logout-btn {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        color: #19d3ff;
-        text-decoration: none;
-        font-size: 10px;
-        font-weight: bold;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        opacity: 0.6;
-    }
-
-    h2 {
-        margin: 0 0 25px 0;
-        font-size: 22px;
-        font-weight: 900;
-        letter-spacing: -1px;
-    }
-
-    h2 span { color: #19d3ff; }
-
     input {
         width: 100%;
-        padding: 16px;
-        margin-top: 12px;
+        padding: 18px;
+        margin-top: 15px;
         border: 1px solid rgba(255,255,255,0.05);
-        border-radius: 12px;
-        background: #0b0f1a;
+        border-radius: 14px;
+        background: #000;
         color: white;
         box-sizing: border-box;
+        font-size: 14px;
         outline: none;
-        transition: border 0.3s;
     }
 
     input:focus { border-color: #19d3ff; }
 
     button {
         width: 100%;
-        padding: 16px;
-        margin-top: 24px;
+        padding: 18px;
+        margin-top: 25px;
         background: #19d3ff;
         border: none;
-        border-radius: 12px;
+        border-radius: 14px;
         font-weight: 800;
         text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #0b0f1a;
+        color: #000;
         cursor: pointer;
-        transition: transform 0.2s;
+        letter-spacing: 1px;
     }
 
-    button:active { transform: scale(0.98); }
-
     .footer-link {
-        margin-top: 20px;
+        margin-top: 25px;
         font-size: 13px;
         color: #6b7280;
     }
@@ -166,50 +151,64 @@
         text-decoration: none;
         font-weight: bold;
     }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .pulse { animation: pulse-glow 2s infinite; }
+    @keyframes pulse-glow {
+        0% { box-shadow: 0 0 0 0 rgba(25, 211, 255, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(25, 211, 255, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(25, 211, 255, 0); }
+    }
 </style>
 </head>
 <body>
 
-<div class="how-it-works">
-    <div class="step-card" style="animation-delay: 0.1s;">
-        <div class="icon-box">₿</div>
-        <div class="step-text">
-            <h4>01. Deposit</h4>
-            <p>Fund your secure wallet via BTC.</p>
+<div class="main-container">
+    <div class="brand-header">
+        <h1>WILLCOIN<span>CAPITAL</span></h1>
+        <p>Secure Member Access</p>
+    </div>
+
+    <div class="how-it-works">
+        <div class="step-card">
+            <div class="icon-box">₿</div>
+            <div class="step-text">
+                <h4>01. Deposit</h4>
+                <p>Fund your secure wallet via BTC.</p>
+            </div>
+        </div>
+
+        <div class="step-card">
+            <div class="icon-box">⚙️</div>
+            <div class="step-text">
+                <h4>02. Stake</h4>
+                <p>Choose your cycle via the slider.</p>
+            </div>
+        </div>
+
+        <div class="step-card pulse" style="border-color: rgba(25, 211, 255, 0.3);">
+            <div class="icon-box">🚀</div>
+            <div class="step-text">
+                <h4>03. Yield</h4>
+                <p>Receive 50% profit in 7 days.</p>
+            </div>
         </div>
     </div>
 
-    <div class="step-card" style="animation-delay: 0.3s;">
-        <div class="icon-box">⚙️</div>
-        <div class="step-text">
-            <h4>02. Stake</h4>
-            <p>Choose your cycle via the slider.</p>
-        </div>
+    <div class="login-box">
+        <input type="text" id="username" placeholder="Email Address">
+        <input type="password" id="password" placeholder="Password">
+
+        <button onclick="login()">Login to Dashboard</button>
+
+        <p class="footer-link">
+            New to WillCoin? <a href="signup.html">Create Account</a>
+        </p>
     </div>
-
-    <div class="step-card pulse" style="animation-delay: 0.5s; border-color: rgba(25, 211, 255, 0.4);">
-        <div class="icon-box">🚀</div>
-        <div class="step-text">
-            <h4>03. Yield</h4>
-            <p>Receive 50% profit in 7 days.</p>
-        </div>
-    </div>
-</div>
-
-<div class="login-box">
-    <a href="index.html" class="logout-btn">Back</a>
-
-    <h2>WILLCOIN<span>CAPITAL</span></h2>
-
-    <input type="text" id="username" placeholder="Email Address">
-    <input type="password" id="password" placeholder="Password">
-
-    <button onclick="login()">Secure Login</button>
-
-    <p class="footer-link">
-        Don't have an account?  
-        <a href="signup.html">Create Account</a>
-    </p>
 </div>
 
 <script src="auth.js"></script>
